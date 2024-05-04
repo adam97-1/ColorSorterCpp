@@ -1,5 +1,0 @@
-../Src/Clock/Clock.cpp:3:1:Clock::Clock()	16	static
-../Src/Clock/Clock.cpp:9:1:Clock::Clock(IClock*)	16	static
-../Src/Clock/Clock.cpp:15:1:Clock::~Clock()	16	static
-../Src/Clock/Clock.cpp:15:1:virtual Clock::~Clock()	16	static
-../Src/Clock/Clock.cpp:21:6:void Clock::setClock(IClock*)	16	static

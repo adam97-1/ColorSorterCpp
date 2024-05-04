@@ -1,7 +1,7 @@
-#include <Clock/Clock.hpp>
-
+#include <Config/Config.hpp>
 int main(void)
 {
-	Clock clock;
+	Config::Configure();
+
 	while(true);
 }
