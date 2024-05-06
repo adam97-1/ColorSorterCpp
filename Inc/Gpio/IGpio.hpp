@@ -5,23 +5,17 @@
 class IGpio
 {
 public:
-	struct Pin
+	enum class Port : uint32_t
 	{
-		enum class Port : uint32_t
-		{
-			A = 0,
-			B = 1,
-			C = 2,
-			D = 3,
-			E = 4,
-			F = 5,
-			G = 6,
-			H = 7
+		A = 0,
+		B = 1,
+		C = 2,
+		D = 3,
+		E = 4,
+		F = 5,
+		G = 6,
+		H = 7
 
-		};
-
-		Port port;
-		uint32_t pin;
 	};
 
 	struct Config
@@ -67,7 +61,7 @@ public:
 		Unknow  = 3
 	};
 
-	virtual bool setConfig(Pin pin, Config config) = 0;
-	virtual bool setState(Pin pin, State state) = 0;
-	virtual State getState(IGpio::Pin pin) = 0;
+	virtual bool setConfig(Port port, uint32_t pin, Config config) = 0;
+	virtual bool setState(Port port, uint32_t pin, State state) = 0;
+	virtual State getState(Port port, uint32_t pin) = 0;
 };

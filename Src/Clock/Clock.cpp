@@ -24,32 +24,32 @@ void Clock::setClock(IClock &clock)
 	m_clock = &clock;
 }
 
-bool Clock::setSource(const IClock::Source source)
+bool Clock::setSource(IClock::Source source)
 {
 	if(!m_clock)
 		return false;
 	return m_clock->setSource(source);
 }
 
-bool Clock::setPLLConfig(const IClock::PllConfig pllConfig)
+bool Clock::setPLLConfig(IClock::PllConfig pllConfig)
 {
 	if(!m_clock)
 		return false;
 	return m_clock->setPLLConfig(pllConfig);
 }
-bool Clock::setAhbPrescaler(const uint32_t prescaler)
+bool Clock::setAhbPrescaler(uint32_t prescaler)
 {
 	if(!m_clock)
 		return false;
 	return m_clock->setAhbPrescaler(prescaler);
 }
-bool Clock::setApb1Prescaler(const uint32_t prescaler)
+bool Clock::setApb1Prescaler(uint32_t prescaler)
 {
 	if(!m_clock)
 		return false;
 	return m_clock->setApb1Prescaler(prescaler);
 }
-bool Clock::setApb2Prescaler(const uint32_t prescaler)
+bool Clock::setApb2Prescaler(uint32_t prescaler)
 {
 	if(!m_clock)
 		return false;

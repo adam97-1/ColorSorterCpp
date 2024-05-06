@@ -19,24 +19,24 @@ void Gpio::setGpio(IGpio &gpio)
 {
 	m_gpio = &gpio;
 }
-bool Gpio::setConfig(IGpio::Pin pin, IGpio::Config config)
+bool Gpio::setConfig(IGpio::Port port, uint32_t pin, IGpio::Config config)
 {
 	if(!m_gpio)
 		return false;
-	return m_gpio->setConfig(pin, config);
+	return m_gpio->setConfig(port, pin, config);
 }
 
-bool Gpio::setState(IGpio::Pin pin, IGpio::State state)
+bool Gpio::setState(IGpio::Port port, uint32_t pin, IGpio::State state)
 {
 	if(!m_gpio)
 		return false;
-	return m_gpio->setState(pin, state);
+	return m_gpio->setState(port, pin, state);
 }
-IGpio::State Gpio::getState(IGpio::Pin pin)
+IGpio::State Gpio::getState(IGpio::Port port, uint32_t pin)
 {
 	if(!m_gpio)
 		return IGpio::State::Unknow;
-	return m_gpio->getState(pin);
+	return m_gpio->getState(port, pin);
 }
 
 

@@ -1,5 +1,4 @@
 
-
 #include "Clock/ClockSTMF446.hpp"
 #include <stm32f446xx.h>
 

@@ -10,138 +10,85 @@ GpioF446::~GpioF446()
 
 }
 
-bool GpioF446::setConfig(IGpio::Pin pin, IGpio::Config config)
+void * GpioF446::getGpio(IGpio::Port port)
 {
-	if(pin.pin > 16)
+	switch(port)
+		{
+		case IGpio::Port::A:
+			return GPIOA;
+		case IGpio::Port::B:
+			return GPIOB;
+		case IGpio::Port::C:
+			return GPIOC;
+		case IGpio::Port::D:
+			return GPIOD;
+		case IGpio::Port::E:
+			return GPIOE;
+		case IGpio::Port::F:
+			return GPIOF;
+		case IGpio::Port::G:
+			return GPIOG;
+		case IGpio::Port::H:
+			return GPIOH;
+		default:
+			return nullptr;
+		}
+}
+
+bool GpioF446::setConfig(IGpio::Port port, uint32_t pin, IGpio::Config config)
+{
+	if(pin > 16)
+		return false;
+	if((config.mode == IGpio::Config::Mode::AlternateFunction) && config.alternateFunction > 15)
+			return false;
+
+	GPIO_TypeDef *gpio = static_cast<GPIO_TypeDef*>(getGpio(port));
+	if(!gpio)
 		return false;
 
-	GPIO_TypeDef *gpio;
-	switch(pin.port)
-	{
-	case IGpio::Pin::Port::A:
-		gpio = GPIOA;
-		break;
-	case IGpio::Pin::Port::B:
-		gpio = GPIOB;
-		break;
-	case IGpio::Pin::Port::C:
-		gpio = GPIOC;
-		break;
-	case IGpio::Pin::Port::D:
-		gpio = GPIOD;
-		break;
-	case IGpio::Pin::Port::E:
-		gpio = GPIOE;
-		break;
-	case IGpio::Pin::Port::F:
-		gpio = GPIOF;
-		break;
-	case IGpio::Pin::Port::G:
-		gpio = GPIOG;
-		break;
-	case IGpio::Pin::Port::H:
-		gpio = GPIOH;
-		break;
-	default:
-		return false;
-	}
-	gpio->MODER &= ~(GPIO_MODER_MODE0_Msk << pin.pin*2);
-	gpio->MODER |= (static_cast<uint32_t>(config.mode) << pin.pin*2);
+	gpio->MODER &= ~(GPIO_MODER_MODE0_Msk << pin*2);
+	gpio->MODER |= (static_cast<uint32_t>(config.mode) << pin*2);
 
-	gpio->OTYPER &= ~(GPIO_OTYPER_OT0_Msk << pin.pin*2);
-	gpio->OTYPER |= (static_cast<uint32_t>(config.typ) << pin.pin*2);
+	gpio->OTYPER &= ~(GPIO_OTYPER_OT0_Msk << pin*2);
+	gpio->OTYPER |= (static_cast<uint32_t>(config.typ) << pin*2);
 
-	gpio->PUPDR &= ~(GPIO_PUPDR_PUPD0_Msk << pin.pin*2);
-	gpio->PUPDR |= (static_cast<uint32_t>(config.polarization) << pin.pin*2);
+	gpio->PUPDR &= ~(GPIO_PUPDR_PUPD0_Msk << pin*2);
+	gpio->PUPDR |= (static_cast<uint32_t>(config.polarization) << pin*2);
 
 	if(config.mode == IGpio::Config::Mode::AlternateFunction)
 	{
-		gpio->AFR[(pin.pin < 8 ? 0 : 1)] &= ~(GPIO_AFRL_AFSEL0_Msk << pin.pin*2);
-		gpio->AFR[(pin.pin < 8 ? 0 : 1)] |= (config.alternateFunction << pin.pin*2);
+		gpio->AFR[(pin < 8 ? 0 : 1)] &= ~(GPIO_AFRL_AFSEL0_Msk << pin*2);
+		gpio->AFR[(pin < 8 ? 0 : 1)] |= (config.alternateFunction << pin*2);
 	}
 	return true;
 }
 
-bool GpioF446::setState(IGpio::Pin pin, IGpio::State state)
+bool GpioF446::setState(IGpio::Port port, uint32_t pin, IGpio::State state)
 {
 	if(state ==  IGpio::State::Unknow)
 	 return true;
 
-	if(pin.pin > 16)
+	if(pin > 16)
 		return false;
 
-	GPIO_TypeDef *gpio;
-	switch(pin.port)
-	{
-	case IGpio::Pin::Port::A:
-		gpio = GPIOA;
-		break;
-	case IGpio::Pin::Port::B:
-		gpio = GPIOB;
-		break;
-	case IGpio::Pin::Port::C:
-		gpio = GPIOC;
-		break;
-	case IGpio::Pin::Port::D:
-		gpio = GPIOD;
-		break;
-	case IGpio::Pin::Port::E:
-		gpio = GPIOE;
-		break;
-	case IGpio::Pin::Port::F:
-		gpio = GPIOF;
-		break;
-	case IGpio::Pin::Port::G:
-		gpio = GPIOG;
-		break;
-	case IGpio::Pin::Port::H:
-		gpio = GPIOH;
-		break;
-	default:
+	GPIO_TypeDef *gpio = static_cast<GPIO_TypeDef*>(getGpio(port));
+	if(!gpio)
 		return false;
-	}
 
-	gpio->ODR &= ~(GPIO_ODR_OD0_Msk << pin.pin*2);
-	gpio->ODR |= (static_cast<uint32_t>(state) << pin.pin*2);
+	gpio->ODR &= ~(GPIO_ODR_OD0_Msk << pin*2);
+	gpio->ODR |= (static_cast<uint32_t>(state) << pin*2);
 	return true;
 }
-IGpio::State GpioF446::getState(IGpio::Pin pin)
+IGpio::State GpioF446::getState(IGpio::Port port, uint32_t pin)
 {
-	if(pin.pin > 16)
+	if(pin > 16)
 		return IGpio::State::Unknow;
 
-	GPIO_TypeDef *gpio;
-	switch(pin.port)
-	{
-	case IGpio::Pin::Port::A:
-		gpio = GPIOA;
-		break;
-	case IGpio::Pin::Port::B:
-		gpio = GPIOB;
-		break;
-	case IGpio::Pin::Port::C:
-		gpio = GPIOC;
-		break;
-	case IGpio::Pin::Port::D:
-		gpio = GPIOD;
-		break;
-	case IGpio::Pin::Port::E:
-		gpio = GPIOE;
-		break;
-	case IGpio::Pin::Port::F:
-		gpio = GPIOF;
-		break;
-	case IGpio::Pin::Port::G:
-		gpio = GPIOG;
-		break;
-	case IGpio::Pin::Port::H:
-		gpio = GPIOH;
-		break;
-	default:
+	GPIO_TypeDef *gpio = static_cast<GPIO_TypeDef*>(getGpio(port));
+	if(!gpio)
 		return IGpio::State::Unknow;
-	}
 
-	if((gpio->IDR & (GPIO_IDR_ID0_Msk << pin.pin*2)) == (GPIO_IDR_ID0_Msk << pin.pin*2))
+	if((gpio->IDR & (GPIO_IDR_ID0_Msk << pin*2)) == (GPIO_IDR_ID0_Msk << pin*2))
 		return IGpio::State::High;
 	else
 		return IGpio::State::Low;

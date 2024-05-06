@@ -22,6 +22,14 @@ public:
 		Tim14 = 14
 	};
 
+	enum class Chanel : uint32_t
+	{
+		Ch1 = 1,
+		Ch2 = 2,
+		Ch3 = 3,
+		Ch4 = 4
+	};
+
 	struct SourceModeInternal
 	{
 
@@ -46,7 +54,7 @@ public:
 
 		enum class EdgeDetect : uint32_t
 		{
-			HighOrising		= 0,
+			HighOrRising		= 0,
 			LowOrFalling	= 1,
 		};
 		uint32_t inputFilter;
@@ -55,21 +63,43 @@ public:
 
 	};
 
-	struct ModePwm
+	enum class PwmMode : uint32_t
 	{
-
+		EdgeAligned 	= 0,
+		CenterAligned1 	= 1,
+		CenterAligned2 	= 2,
+		CenterAligned3 	= 3
 	};
 
 	struct ModeEncoder
 	{
+		enum class EdgeDetect : uint32_t
+		{
+			NoInvertedRising	= 0,
+			InvertedFalling		= 1,
+			NoInvertedBoth		= 3
+		};
 
+		enum class Mode : uint32_t
+		{
+			Ti2DependingTi1 	= 1,
+			Ti1DependingTi2 	= 2,
+			BothDependingTi		= 3
+		};
+
+		uint32_t inputFilter;
+		EdgeDetect edgeDetectT1;
+		EdgeDetect edgeDetectT2;
+		Mode mode;
 	};
 
 	virtual bool setEnable(Timer timer, bool OnOff) = 0;
 	virtual bool setSourceMode(Timer timer, SourceModeInternal sourceMode) = 0;
 	virtual bool setSourceMode(Timer timer, SourceModeExternal1 sourceMode) = 0;
 	virtual bool setSourceMode(Timer timer, SourceModeExternal2 sourceMode) = 0;
-	virtual bool setMode(Timer timer, ModePwm mode) = 0;
+	virtual bool setMode(Timer timer, PwmMode mode) = 0;
 	virtual bool setMode(Timer timer, ModeEncoder mode) = 0;
+	virtual uint32_t getCounterValue(Timer timer) = 0;
+	virtual bool setReloadValue(Timer timer, Chanel chanel, uint32_t value) = 0;
 
 };
