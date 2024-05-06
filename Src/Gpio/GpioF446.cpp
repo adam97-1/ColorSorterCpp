@@ -57,8 +57,8 @@ bool GpioF446::setConfig(IGpio::Port port, uint32_t pin, IGpio::Config config)
 
 	if(config.mode == IGpio::Config::Mode::AlternateFunction)
 	{
-		gpio->AFR[(pin < 8 ? 0 : 1)] &= ~(GPIO_AFRL_AFSEL0_Msk << pin*2);
-		gpio->AFR[(pin < 8 ? 0 : 1)] |= (config.alternateFunction << pin*2);
+		gpio->AFR[(pin < 8 ? 0 : 1)] &= ~(GPIO_AFRL_AFSEL0_Msk << (pin % 8)*4);
+		gpio->AFR[(pin < 8 ? 0 : 1)] |= (config.alternateFunction << (pin % 8)*4);
 	}
 	return true;
 }

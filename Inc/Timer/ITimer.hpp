@@ -54,7 +54,7 @@ public:
 
 		enum class EdgeDetect : uint32_t
 		{
-			HighOrRising		= 0,
+			HighOrRising	= 0,
 			LowOrFalling	= 1,
 		};
 		uint32_t inputFilter;
@@ -100,6 +100,8 @@ public:
 	virtual bool setMode(Timer timer, PwmMode mode) = 0;
 	virtual bool setMode(Timer timer, ModeEncoder mode) = 0;
 	virtual uint32_t getCounterValue(Timer timer) = 0;
-	virtual bool setReloadValue(Timer timer, Chanel chanel, uint32_t value) = 0;
+	virtual bool setReloadValue(Timer timer, uint32_t value) = 0;
+	virtual uint32_t getReloadValue(Timer timer) = 0;
+	virtual bool setCompareValue(Timer timer, Chanel chanel, uint32_t value) = 0;
 
 };

@@ -8,10 +8,10 @@ public:
 	{
 		enum class P : uint32_t
 		{
-			P2 = 2,
-			P4 = 4,
-			P6 = 6,
-			P8 = 8
+			P2 = 0,
+			P4 = 1,
+			P6 = 2,
+			P8 = 3
 		};
 		enum class Source : uint32_t
 		{

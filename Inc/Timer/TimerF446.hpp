@@ -16,7 +16,9 @@ public:
 	bool setMode(ITimer::Timer timer, ITimer::PwmMode mode) override;
 	bool setMode(ITimer::Timer timer, ITimer::ModeEncoder mode) override;
 	uint32_t getCounterValue(ITimer::Timer timer) override;
-	bool setReloadValue(ITimer::Timer timer, ITimer::Chanel chanel, uint32_t value) override;
+	bool setReloadValue(ITimer::Timer timer, uint32_t value) override;
+	uint32_t getReloadValue(ITimer::Timer timer) override;
+	bool setCompareValue(ITimer::Timer timer, ITimer::Chanel chanel, uint32_t value) override;
 
 private:
 	void * getTimer(ITimer::Timer  timer);

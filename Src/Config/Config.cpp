@@ -19,7 +19,6 @@ void Config::Configure()
 {
 	static Config config;
 
-	Clock::getInstance().setEnable(IClock::Peripheral::Pll, true);
 	Clock::getInstance().setEnable(IClock::Peripheral::Pwr, true);
 	Clock::getInstance().setEnable(IClock::Peripheral::GpioA, true);
 	Clock::getInstance().setEnable(IClock::Peripheral::GpioB, true);
@@ -149,33 +148,40 @@ void Config::Configure()
 
 	Timer::getInstance().setSourceMode(ITimer::Timer::Tim3,
 						ITimer::SourceModeExternal2{.inputFilter = 0,
-													.edgeDetect = ITimer::SourceModeExternal2::EdgeDetect::HighOrRising,
+													.edgeDetect = ITimer::SourceModeExternal2::EdgeDetect::LowOrFalling,
 													.presacaler = 2});
 	Timer::getInstance().setMode(ITimer::Timer::Tim4, ITimer::PwmMode::EdgeAligned);
-	Timer::getInstance().setReloadValue(ITimer::Timer::Tim4, ITimer::Chanel::Ch1, 2000);
-	Timer::getInstance().setReloadValue(ITimer::Timer::Tim4, ITimer::Chanel::Ch3, 2000);
-	Timer::getInstance().setReloadValue(ITimer::Timer::Tim4, ITimer::Chanel::Ch4, 2000);
+	Timer::getInstance().setReloadValue(ITimer::Timer::Tim4, 2000);
 	Timer::getInstance().setMode(ITimer::Timer::Tim14, ITimer::PwmMode::EdgeAligned);
-	Timer::getInstance().setReloadValue(ITimer::Timer::Tim14, ITimer::Chanel::Ch1, 2000);
+	Timer::getInstance().setReloadValue(ITimer::Timer::Tim14, 2000);
 	Timer::getInstance().setMode(ITimer::Timer::Tim1,
 								ITimer::ModeEncoder{ .inputFilter = 0,
 													.edgeDetectT1 = ITimer::ModeEncoder::EdgeDetect::NoInvertedRising,
 													.edgeDetectT2 = ITimer::ModeEncoder::EdgeDetect::NoInvertedRising,
 													.mode = ITimer::ModeEncoder::Mode::BothDependingTi});
-	Timer::getInstance().setReloadValue(ITimer::Timer::Tim1, ITimer::Chanel::Ch1, 2500);
+	Timer::getInstance().setReloadValue(ITimer::Timer::Tim1, 2500);
 
 	Timer::getInstance().setMode(ITimer::Timer::Tim2,
 								ITimer::ModeEncoder{ .inputFilter = 0,
 													.edgeDetectT1 = ITimer::ModeEncoder::EdgeDetect::NoInvertedRising,
 													.edgeDetectT2 = ITimer::ModeEncoder::EdgeDetect::NoInvertedRising,
 													.mode = ITimer::ModeEncoder::Mode::BothDependingTi});
-	Timer::getInstance().setReloadValue(ITimer::Timer::Tim2, ITimer::Chanel::Ch1, 2500);
+	Timer::getInstance().setReloadValue(ITimer::Timer::Tim2, 2500);
 
 	IClock::PllConfig pllConfig = {.m = 8, .n = 180, .p = IClock::PllConfig::P::P2, .q = 2, .r = 2, .source = IClock::PllConfig::Source::Hsi};
 	Clock::getInstance().setPLLConfig(pllConfig);
 	Clock::getInstance().setAhbPrescaler(1);
 	Clock::getInstance().setApb1Prescaler(4);
 	Clock::getInstance().setApb2Prescaler(2);
+	Clock::getInstance().setEnable(IClock::Peripheral::Pll, true);
 	Clock::getInstance().setSource(IClock::Source::Pll);
+
+
 	SystemCoreClockUpdate();
+
+	Timer::getInstance().setEnable(ITimer::Timer::Tim1, true);
+	Timer::getInstance().setEnable(ITimer::Timer::Tim2, true);
+	Timer::getInstance().setEnable(ITimer::Timer::Tim3, true);
+	Timer::getInstance().setEnable(ITimer::Timer::Tim4, true);
+	Timer::getInstance().setEnable(ITimer::Timer::Tim14, true);
 }

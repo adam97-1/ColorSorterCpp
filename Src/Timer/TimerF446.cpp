@@ -85,7 +85,7 @@ bool TimerF446::setSourceMode(ITimer::Timer timer, ITimer::SourceModeExternal1 s
 
 	if(!tim)
 		return false;
-	if(sourceMode.inputFilter < 16)
+	if(sourceMode.inputFilter > 16)
 		return false;
 
 	tim->CCMR1 &= ~(TIM_CCMR1_CC2S_Msk);
@@ -124,7 +124,7 @@ bool TimerF446::setSourceMode(ITimer::Timer timer, ITimer::SourceModeExternal2 s
 
 	if(!tim)
 		return false;
-	if(sourceMode.inputFilter < 16)
+	if(sourceMode.inputFilter > 16)
 		return false;
 
 	if(sourceMode.presacaler > 8 || sourceMode.presacaler < 1)
@@ -224,7 +224,7 @@ uint32_t TimerF446::getCounterValue(ITimer::Timer timer)
 
 	return tim->CNT;
 }
-bool TimerF446::setReloadValue(ITimer::Timer timer, ITimer::Chanel chanel, uint32_t value)
+bool TimerF446::setCompareValue(ITimer::Timer timer, ITimer::Chanel chanel, uint32_t value)
 {
 	TIM_TypeDef *tim = static_cast<TIM_TypeDef*>(getTimer(timer));
 
@@ -247,4 +247,26 @@ bool TimerF446::setReloadValue(ITimer::Timer timer, ITimer::Chanel chanel, uint3
 	default:
 		return false;
 	}
+}
+
+bool TimerF446::setReloadValue(ITimer::Timer timer, uint32_t value)
+{
+	TIM_TypeDef *tim = static_cast<TIM_TypeDef*>(getTimer(timer));
+
+	if(!tim)
+		return false;
+
+	tim->ARR = value;
+	return true;
+
+}
+
+uint32_t TimerF446::getReloadValue(ITimer::Timer timer)
+{
+	TIM_TypeDef *tim = static_cast<TIM_TypeDef*>(getTimer(timer));
+
+	if(!tim)
+		return 0;
+
+	return tim->ARR;
 }

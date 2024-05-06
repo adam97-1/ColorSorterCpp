@@ -62,9 +62,21 @@ uint32_t Timer::getCounterValue(ITimer::Timer timer)
 		return false;
 	return m_timer->getCounterValue(timer);
 }
-bool Timer::setReloadValue(ITimer::Timer timer, ITimer::Chanel chanel, uint32_t value)
+bool Timer::setReloadValue(ITimer::Timer timer, uint32_t value)
 {
 	if(!m_timer)
 		return false;
-	return m_timer->setReloadValue(timer, chanel, value);
+	return m_timer->setReloadValue(timer, value);
+}
+uint32_t Timer::getReloadValue(ITimer::Timer timer)
+{
+	if(!m_timer)
+		return 0;
+	return m_timer->getReloadValue(timer);
+}
+bool Timer::setCompareValue(ITimer::Timer timer, ITimer::Chanel chanel, uint32_t value)
+{
+	if(!m_timer)
+		return false;
+	return m_timer->setCompareValue(timer, chanel, value);
 }

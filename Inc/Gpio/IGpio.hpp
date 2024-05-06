@@ -24,8 +24,8 @@ public:
 		{
 			Input 				= 0,
 			Output 				= 1,
-			AlternateFunction	= 3,
-			Analog				= 4
+			AlternateFunction	= 2,
+			Analog				= 3
 		};
 		enum class Typ : uint32_t
 		{

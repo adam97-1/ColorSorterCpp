@@ -18,7 +18,9 @@ public:
 	bool setMode(ITimer::Timer timer, ITimer::PwmMode mode);
 	bool setMode(ITimer::Timer timer, ITimer::ModeEncoder mode);
 	uint32_t getCounterValue(ITimer::Timer timer);
-	bool setReloadValue(ITimer::Timer timer, ITimer::Chanel chanel, uint32_t value);
+	bool setReloadValue(ITimer::Timer timer, uint32_t value);
+	uint32_t getReloadValue(ITimer::Timer timer);
+	bool setCompareValue(ITimer::Timer timer, ITimer::Chanel chanel, uint32_t value);
 
 private:
 	ITimer *m_timer {nullptr};
