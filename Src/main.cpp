@@ -2,6 +2,12 @@
 #include "TaskMenager.hpp"
 #include "IrDetector.hpp"
 #include "ColorDetector.hpp"
+ColorDetector::Color m_color;
+void Func(ColorDetector::Color color)
+{
+	m_color = color;
+}
+
 int main(void)
 {
 	Config::Configure();
@@ -18,8 +24,10 @@ int main(void)
 	taskMenager.addTask(irDetectorSel);
 	taskMenager.addTask(irlDetectorCol);
 	taskMenager.addTask(colorDetector);
+	colorDetector.setColorReady(Func);
 	while(true)
 	{
 		taskMenager.run();
+		colorDetector.measurementColor();
 	}
 }

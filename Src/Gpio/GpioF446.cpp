@@ -75,8 +75,8 @@ bool GpioF446::setState(IGpio::Gpio gpio, IGpio::State state)
 	if(!gpio_reg)
 		return false;
 
-	gpio_reg->ODR &= ~(GPIO_ODR_OD0_Msk << gpio.pin*2);
-	gpio_reg->ODR |= (static_cast<uint32_t>(state) << gpio.pin*2);
+	gpio_reg->ODR &= ~(GPIO_ODR_OD0_Msk << gpio.pin);
+	gpio_reg->ODR |= (static_cast<uint32_t>(state) << gpio.pin);
 	return true;
 }
 IGpio::State GpioF446::getState(Gpio gpio)
@@ -88,7 +88,7 @@ IGpio::State GpioF446::getState(Gpio gpio)
 	if(!gpio_reg)
 		return IGpio::State::Unknow;
 
-	if((gpio_reg->IDR & (GPIO_IDR_ID0_Msk << gpio.pin*2)) == (GPIO_IDR_ID0_Msk << gpio.pin*2))
+	if((gpio_reg->IDR & (GPIO_IDR_ID0_Msk << gpio.pin)) == (GPIO_IDR_ID0 << gpio.pin))
 		return IGpio::State::High;
 	else
 		return IGpio::State::Low;

@@ -30,8 +30,7 @@ public:
 	ColorDetector(Config config, uint32_t period, uint32_t priority);
 	virtual ~ColorDetector();
 
-    template<void (*Function)(Color)>
-    void setColorReady();
+    void setColorReady(std::function<void(Color)> func);
 
     template<class C, void (C::*Function)(Color)>
     void setColorReady(C *instance);

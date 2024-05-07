@@ -128,14 +128,14 @@ void Config::Configure()
 							.alternateFunction = 0});
 	Gpio::getInstance().setConfig(
 			IGpio::Gpio { .port = IGpio::Port::C, .pin = 8},
-			IGpio::Config { .mode = IGpio::Config::Mode::Output,
+			IGpio::Config { .mode = IGpio::Config::Mode::Input,
 							.typ  = IGpio::Config::Typ::PushPull,
 							.speed = IGpio::Config::Speed::Low,
 							.polarization = IGpio::Config::Polarization::PullUp,
 							.alternateFunction = 0});
 	Gpio::getInstance().setConfig(
 			IGpio::Gpio { .port = IGpio::Port::C, .pin = 9},
-			IGpio::Config { .mode = IGpio::Config::Mode::Output,
+			IGpio::Config { .mode = IGpio::Config::Mode::Input,
 							.typ  = IGpio::Config::Typ::PushPull,
 							.speed = IGpio::Config::Speed::Low,
 							.polarization = IGpio::Config::Polarization::PullUp,
@@ -164,7 +164,7 @@ void Config::Configure()
 
 	Timer::getInstance().setSourceMode(ITimer::Timer::Tim3,
 						ITimer::SourceModeExternal2{.inputFilter = 0,
-													.edgeDetect = ITimer::SourceModeExternal2::EdgeDetect::LowOrFalling,
+													.edgeDetect = ITimer::SourceModeExternal2::EdgeDetect::HighOrRising,
 													.presacaler = 2});
 	Timer::getInstance().setMode(ITimer::Timer::Tim4, ITimer::PwmMode::EdgeAligned);
 	Timer::getInstance().setReloadValue(ITimer::Timer::Tim4, 2000);

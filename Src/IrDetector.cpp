@@ -13,35 +13,32 @@ IrDetector::IrDetector(IGpio::Gpio inSignal, uint32_t period, uint32_t priority)
 IrDetector::~IrDetector() {
 }
 
-template<void (*Function)(void)>
-void IrDetector::setRisingEdgeState()
+
+void IrDetector::setRisingEdgeState(std::function<void()> func)
 {
-    m_risingEdgeState = std::bind(Function);
+    m_risingEdgeState = func;
 }
 
 template<class C, void (C::*Function)(void)>
 void IrDetector::setFallingEdgeState(C *instance)
 {
-    m_fallingEdgeState = std::bind(Function, instance);
+	m_risingEdgeState = std::bind(Function, instance);
 }
 
-template<void (*Function)(void)>
-void IrDetector::setFallingEdgeState()
+void IrDetector::setFallingEdgeState(std::function<void()> func)
 {
-	m_fallingEdgeState = std::bind(Function);
+	m_fallingEdgeState = func;
 }
 
 template<class C, void (C::*Function)(void)>
 void IrDetector::setRisingEdgeState(C *instance)
 {
-    m_risingEdgeState = std::bind(Function, instance);
+	m_fallingEdgeState = std::bind(Function, instance);
 }
 void IrDetector::loop()
 {
-	static IGpio::State  oldState = IGpio::State::Unknow;
-
 	IGpio::State state = Gpio::getInstance().getState(m_inSignal);
-	if ((state != oldState) && (oldState != IGpio::State::Unknow)) {
+	if ((state != m_oldState) && (m_oldState != IGpio::State::Unknow)) {
 		if (state == IGpio::State::High)
 		{
 			m_risingEdgeState();
@@ -50,8 +47,9 @@ void IrDetector::loop()
 		{
 			m_fallingEdgeState();
 		}
-		oldState = state;
+
 	}
+	m_oldState = state;
 }
 IGpio::State IrDetector::getState()
 {

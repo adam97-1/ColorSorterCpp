@@ -16,10 +16,10 @@ ColorDetector::~ColorDetector()
 
 }
 
-template<void (*Function)(ColorDetector::Color)>
-void ColorDetector::setColorReady()
+
+void ColorDetector::setColorReady(std::function<void(Color)> func)
 {
-    m_colorReady = std::bind(Function, std::placeholders::_1);
+    m_colorReady = func;
 }
 
 template<class C, void (C::*Function)(ColorDetector::Color)>
