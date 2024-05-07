@@ -17,6 +17,7 @@ public:
 	bool setSourceMode(ITimer::Timer timer, ITimer::SourceModeExternal2 sourceMode);
 	bool setMode(ITimer::Timer timer, ITimer::PwmMode mode);
 	bool setMode(ITimer::Timer timer, ITimer::ModeEncoder mode);
+	bool setCounterValue(ITimer::Timer timer, uint32_t value);
 	uint32_t getCounterValue(ITimer::Timer timer);
 	bool setReloadValue(ITimer::Timer timer, uint32_t value);
 	uint32_t getReloadValue(ITimer::Timer timer);

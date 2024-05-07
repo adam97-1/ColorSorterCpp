@@ -215,6 +215,16 @@ bool TimerF446::setMode(ITimer::Timer timer, ITimer::ModeEncoder mode)
 	return true;
 
 }
+bool TimerF446::setCounterValue(ITimer::Timer timer, uint32_t value)
+{
+	TIM_TypeDef *tim = static_cast<TIM_TypeDef*>(getTimer(timer));
+
+	if(!tim)
+		return 0;
+
+	tim->CNT = value;
+	return true;
+}
 uint32_t TimerF446::getCounterValue(ITimer::Timer timer)
 {
 	TIM_TypeDef *tim = static_cast<TIM_TypeDef*>(getTimer(timer));

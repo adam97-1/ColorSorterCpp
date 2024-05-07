@@ -42,109 +42,125 @@ void Config::Configure()
 	// LED - PC12
 	// OUT - PD2/TIM3_ETR
 
-//	Gpio::getInstance().setConfig(IGpio::Port::A, 2,
+//	Gpio::getInstance().setConfig(
+//			IGpio::Gpio { .port = IGpio::Port::A, .pin = 2},
 //			IGpio::Config { .mode = IGpio::Config::Mode::AlternateFunction,
 //							.typ  = IGpio::Config::Typ::PushPull,
 //							.speed = IGpio::Config::Speed::Low,
 //							.polarization = IGpio::Config::Polarization::PullUp,
 //							.alternateFunction = 7});
-//	Gpio::getInstance().setConfig(IGpio::Port::A, 3,
+//	Gpio::getInstance().setConfig(
+//			IGpio::Gpio { .port = IGpio::Port::A, .pin = 3},
 //			IGpio::Config { .mode = IGpio::Config::Mode::AlternateFunction,
 //							.typ  = IGpio::Config::Typ::PushPull,
 //							.speed = IGpio::Config::Speed::Low,
 //							.polarization = IGpio::Config::Polarization::PullUp,
 //							.alternateFunction = 7});
-	Gpio::getInstance().setConfig(IGpio::Port::A, 5,
+	Gpio::getInstance().setConfig(
+			IGpio::Gpio { .port = IGpio::Port::A, .pin = 5},
 			IGpio::Config { .mode = IGpio::Config::Mode::AlternateFunction,
 							.typ  = IGpio::Config::Typ::PushPull,
 							.speed = IGpio::Config::Speed::Low,
 							.polarization = IGpio::Config::Polarization::PullUp,
 							.alternateFunction = 1});
-	Gpio::getInstance().setConfig(IGpio::Port::A, 7,
+	Gpio::getInstance().setConfig(
+			IGpio::Gpio { .port = IGpio::Port::A, .pin = 7},
 			IGpio::Config { .mode = IGpio::Config::Mode::AlternateFunction,
 							.typ  = IGpio::Config::Typ::PushPull,
 							.speed = IGpio::Config::Speed::Low,
 							.polarization = IGpio::Config::Polarization::PullUp,
 							.alternateFunction = 9});
-	Gpio::getInstance().setConfig(IGpio::Port::A, 8,
+	Gpio::getInstance().setConfig(
+			IGpio::Gpio { .port = IGpio::Port::A, .pin = 8},
 			IGpio::Config { .mode = IGpio::Config::Mode::AlternateFunction,
 							.typ  = IGpio::Config::Typ::PushPull,
 							.speed = IGpio::Config::Speed::Low,
 							.polarization = IGpio::Config::Polarization::PullUp,
 							.alternateFunction = 1});
-	Gpio::getInstance().setConfig(IGpio::Port::A, 9,
+	Gpio::getInstance().setConfig(
+			IGpio::Gpio { .port = IGpio::Port::A, .pin = 9},
 			IGpio::Config { .mode = IGpio::Config::Mode::AlternateFunction,
 							.typ  = IGpio::Config::Typ::PushPull,
 							.speed = IGpio::Config::Speed::Low,
 							.polarization = IGpio::Config::Polarization::PullUp,
 							.alternateFunction = 1});
-	Gpio::getInstance().setConfig(IGpio::Port::B, 3,
+	Gpio::getInstance().setConfig(
+			IGpio::Gpio { .port = IGpio::Port::B, .pin = 3},
 			IGpio::Config { .mode = IGpio::Config::Mode::Output,
 							.typ  = IGpio::Config::Typ::PushPull,
 							.speed = IGpio::Config::Speed::Low,
 							.polarization = IGpio::Config::Polarization::PullUp,
 							.alternateFunction = 1});
-	Gpio::getInstance().setConfig(IGpio::Port::B, 6,
+	Gpio::getInstance().setConfig(
+			IGpio::Gpio { .port = IGpio::Port::B, .pin = 6},
 			IGpio::Config { .mode = IGpio::Config::Mode::AlternateFunction,
 							.typ  = IGpio::Config::Typ::PushPull,
 							.speed = IGpio::Config::Speed::Low,
 							.polarization = IGpio::Config::Polarization::PullUp,
 							.alternateFunction = 2});
-	Gpio::getInstance().setConfig(IGpio::Port::B, 8,
+	Gpio::getInstance().setConfig(
+			IGpio::Gpio { .port = IGpio::Port::B, .pin = 8},
 			IGpio::Config { .mode = IGpio::Config::Mode::AlternateFunction,
 							.typ  = IGpio::Config::Typ::PushPull,
 							.speed = IGpio::Config::Speed::Low,
 							.polarization = IGpio::Config::Polarization::PullUp,
 							.alternateFunction = 2});
-	Gpio::getInstance().setConfig(IGpio::Port::B, 9,
+	Gpio::getInstance().setConfig(
+			IGpio::Gpio { .port = IGpio::Port::B, .pin = 9},
 			IGpio::Config { .mode = IGpio::Config::Mode::AlternateFunction,
 							.typ  = IGpio::Config::Typ::PushPull,
 							.speed = IGpio::Config::Speed::Low,
 							.polarization = IGpio::Config::Polarization::PullUp,
 							.alternateFunction = 2});
-	Gpio::getInstance().setConfig(IGpio::Port::C, 5,
+	Gpio::getInstance().setConfig(
+			IGpio::Gpio { .port = IGpio::Port::C, .pin = 5},
 			IGpio::Config { .mode = IGpio::Config::Mode::Output,
 							.typ  = IGpio::Config::Typ::PushPull,
 							.speed = IGpio::Config::Speed::Low,
 							.polarization = IGpio::Config::Polarization::PullUp,
 							.alternateFunction = 0});
-	Gpio::getInstance().setConfig(IGpio::Port::C, 6,
+	Gpio::getInstance().setConfig(
+			IGpio::Gpio { .port = IGpio::Port::C, .pin = 6},
 			IGpio::Config { .mode = IGpio::Config::Mode::Output,
 							.typ  = IGpio::Config::Typ::PushPull,
 							.speed = IGpio::Config::Speed::Low,
 							.polarization = IGpio::Config::Polarization::PullUp,
 							.alternateFunction = 0});
-	Gpio::getInstance().setConfig(IGpio::Port::C, 8,
+	Gpio::getInstance().setConfig(
+			IGpio::Gpio { .port = IGpio::Port::C, .pin = 8},
 			IGpio::Config { .mode = IGpio::Config::Mode::Output,
 							.typ  = IGpio::Config::Typ::PushPull,
 							.speed = IGpio::Config::Speed::Low,
 							.polarization = IGpio::Config::Polarization::PullUp,
 							.alternateFunction = 0});
-	Gpio::getInstance().setConfig(IGpio::Port::C, 9,
+	Gpio::getInstance().setConfig(
+			IGpio::Gpio { .port = IGpio::Port::C, .pin = 9},
 			IGpio::Config { .mode = IGpio::Config::Mode::Output,
 							.typ  = IGpio::Config::Typ::PushPull,
 							.speed = IGpio::Config::Speed::Low,
 							.polarization = IGpio::Config::Polarization::PullUp,
 							.alternateFunction = 0});
-	Gpio::getInstance().setConfig(IGpio::Port::C, 10,
+	Gpio::getInstance().setConfig(
+			IGpio::Gpio { .port = IGpio::Port::C, .pin = 10},
 			IGpio::Config { .mode = IGpio::Config::Mode::Output,
 							.typ  = IGpio::Config::Typ::PushPull,
 							.speed = IGpio::Config::Speed::Low,
 							.polarization = IGpio::Config::Polarization::PullUp,
 							.alternateFunction = 0});
-	Gpio::getInstance().setConfig(IGpio::Port::C, 12,
+	Gpio::getInstance().setConfig(
+			IGpio::Gpio { .port = IGpio::Port::C, .pin = 12},
 			IGpio::Config { .mode = IGpio::Config::Mode::Output,
 							.typ  = IGpio::Config::Typ::PushPull,
 							.speed = IGpio::Config::Speed::Low,
 							.polarization = IGpio::Config::Polarization::PullUp,
 							.alternateFunction = 0});
-	Gpio::getInstance().setConfig(IGpio::Port::D, 2,
-			IGpio::Config { .mode = IGpio::Config::Mode::AlternateFunction,
-							.typ  = IGpio::Config::Typ::PushPull,
-							.speed = IGpio::Config::Speed::Low,
-							.polarization = IGpio::Config::Polarization::PullUp,
-							.alternateFunction = 2});
-
+	Gpio::getInstance().setConfig(
+		IGpio::Gpio { .port = IGpio::Port::D, .pin = 2},
+		IGpio::Config { .mode = IGpio::Config::Mode::AlternateFunction,
+						.typ  = IGpio::Config::Typ::PushPull,
+						.speed = IGpio::Config::Speed::Low,
+						.polarization = IGpio::Config::Polarization::PullUp,
+						.alternateFunction = 2});
 
 	Timer::getInstance().setSourceMode(ITimer::Timer::Tim3,
 						ITimer::SourceModeExternal2{.inputFilter = 0,

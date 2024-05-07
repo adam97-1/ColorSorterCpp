@@ -15,6 +15,7 @@ public:
 	bool setSourceMode(ITimer::Timer timer, ITimer::SourceModeExternal2 sourceMode) override;
 	bool setMode(ITimer::Timer timer, ITimer::PwmMode mode) override;
 	bool setMode(ITimer::Timer timer, ITimer::ModeEncoder mode) override;
+	bool setCounterValue(ITimer::Timer timer, uint32_t value) override;
 	uint32_t getCounterValue(ITimer::Timer timer) override;
 	bool setReloadValue(ITimer::Timer timer, uint32_t value) override;
 	uint32_t getReloadValue(ITimer::Timer timer) override;

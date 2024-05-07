@@ -35,60 +35,60 @@ void * GpioF446::getGpio(IGpio::Port port)
 		}
 }
 
-bool GpioF446::setConfig(IGpio::Port port, uint32_t pin, IGpio::Config config)
+bool GpioF446::setConfig(IGpio::Gpio gpio, IGpio::Config config)
 {
-	if(pin > 16)
+	if(gpio.pin > 16)
 		return false;
 	if((config.mode == IGpio::Config::Mode::AlternateFunction) && config.alternateFunction > 15)
 			return false;
 
-	GPIO_TypeDef *gpio = static_cast<GPIO_TypeDef*>(getGpio(port));
-	if(!gpio)
+	GPIO_TypeDef *gpio_reg = static_cast<GPIO_TypeDef*>(getGpio(gpio.port));
+	if(!gpio_reg)
 		return false;
 
-	gpio->MODER &= ~(GPIO_MODER_MODE0_Msk << pin*2);
-	gpio->MODER |= (static_cast<uint32_t>(config.mode) << pin*2);
+	gpio_reg->MODER &= ~(GPIO_MODER_MODE0_Msk << gpio.pin*2);
+	gpio_reg->MODER |= (static_cast<uint32_t>(config.mode) << gpio.pin*2);
 
-	gpio->OTYPER &= ~(GPIO_OTYPER_OT0_Msk << pin*2);
-	gpio->OTYPER |= (static_cast<uint32_t>(config.typ) << pin*2);
+	gpio_reg->OTYPER &= ~(GPIO_OTYPER_OT0_Msk << gpio.pin*2);
+	gpio_reg->OTYPER |= (static_cast<uint32_t>(config.typ) << gpio.pin*2);
 
-	gpio->PUPDR &= ~(GPIO_PUPDR_PUPD0_Msk << pin*2);
-	gpio->PUPDR |= (static_cast<uint32_t>(config.polarization) << pin*2);
+	gpio_reg->PUPDR &= ~(GPIO_PUPDR_PUPD0_Msk << gpio.pin*2);
+	gpio_reg->PUPDR |= (static_cast<uint32_t>(config.polarization) << gpio.pin*2);
 
 	if(config.mode == IGpio::Config::Mode::AlternateFunction)
 	{
-		gpio->AFR[(pin < 8 ? 0 : 1)] &= ~(GPIO_AFRL_AFSEL0_Msk << (pin % 8)*4);
-		gpio->AFR[(pin < 8 ? 0 : 1)] |= (config.alternateFunction << (pin % 8)*4);
+		gpio_reg->AFR[(gpio.pin < 8 ? 0 : 1)] &= ~(GPIO_AFRL_AFSEL0_Msk << (gpio.pin % 8)*4);
+		gpio_reg->AFR[(gpio.pin < 8 ? 0 : 1)] |= (config.alternateFunction << (gpio.pin % 8)*4);
 	}
 	return true;
 }
 
-bool GpioF446::setState(IGpio::Port port, uint32_t pin, IGpio::State state)
+bool GpioF446::setState(IGpio::Gpio gpio, IGpio::State state)
 {
 	if(state ==  IGpio::State::Unknow)
 	 return true;
 
-	if(pin > 16)
+	if(gpio.pin > 16)
 		return false;
 
-	GPIO_TypeDef *gpio = static_cast<GPIO_TypeDef*>(getGpio(port));
-	if(!gpio)
+	GPIO_TypeDef *gpio_reg = static_cast<GPIO_TypeDef*>(getGpio(gpio.port));
+	if(!gpio_reg)
 		return false;
 
-	gpio->ODR &= ~(GPIO_ODR_OD0_Msk << pin*2);
-	gpio->ODR |= (static_cast<uint32_t>(state) << pin*2);
+	gpio_reg->ODR &= ~(GPIO_ODR_OD0_Msk << gpio.pin*2);
+	gpio_reg->ODR |= (static_cast<uint32_t>(state) << gpio.pin*2);
 	return true;
 }
-IGpio::State GpioF446::getState(IGpio::Port port, uint32_t pin)
+IGpio::State GpioF446::getState(Gpio gpio)
 {
-	if(pin > 16)
+	if(gpio.pin > 16)
 		return IGpio::State::Unknow;
 
-	GPIO_TypeDef *gpio = static_cast<GPIO_TypeDef*>(getGpio(port));
-	if(!gpio)
+	GPIO_TypeDef *gpio_reg = static_cast<GPIO_TypeDef*>(getGpio(gpio.port));
+	if(!gpio_reg)
 		return IGpio::State::Unknow;
 
-	if((gpio->IDR & (GPIO_IDR_ID0_Msk << pin*2)) == (GPIO_IDR_ID0_Msk << pin*2))
+	if((gpio_reg->IDR & (GPIO_IDR_ID0_Msk << gpio.pin*2)) == (GPIO_IDR_ID0_Msk << gpio.pin*2))
 		return IGpio::State::High;
 	else
 		return IGpio::State::Low;

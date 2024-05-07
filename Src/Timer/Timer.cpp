@@ -56,6 +56,13 @@ bool Timer::setMode(ITimer::Timer timer, ITimer::ModeEncoder mode)
 		return false;
 	return m_timer->setMode(timer, mode);
 }
+
+bool Timer::setCounterValue(ITimer::Timer timer, uint32_t value)
+{
+	if(!m_timer)
+		return false;
+	return m_timer->setCounterValue(timer, value);
+}
 uint32_t Timer::getCounterValue(ITimer::Timer timer)
 {
 	if(!m_timer)

@@ -99,6 +99,7 @@ public:
 	virtual bool setSourceMode(Timer timer, SourceModeExternal2 sourceMode) = 0;
 	virtual bool setMode(Timer timer, PwmMode mode) = 0;
 	virtual bool setMode(Timer timer, ModeEncoder mode) = 0;
+	virtual bool setCounterValue(Timer timer, uint32_t value) = 0;
 	virtual uint32_t getCounterValue(Timer timer) = 0;
 	virtual bool setReloadValue(Timer timer, uint32_t value) = 0;
 	virtual uint32_t getReloadValue(Timer timer) = 0;

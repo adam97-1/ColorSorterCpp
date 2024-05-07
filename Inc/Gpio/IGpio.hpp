@@ -18,6 +18,12 @@ public:
 
 	};
 
+	struct Gpio
+	{
+		Port port;
+		uint32_t pin;
+	};
+
 	struct Config
 	{
 		enum class Mode : uint32_t
@@ -61,7 +67,7 @@ public:
 		Unknow  = 3
 	};
 
-	virtual bool setConfig(Port port, uint32_t pin, Config config) = 0;
-	virtual bool setState(Port port, uint32_t pin, State state) = 0;
-	virtual State getState(Port port, uint32_t pin) = 0;
+	virtual bool setConfig(Gpio gpio, Config config) = 0;
+	virtual bool setState(Gpio gpio, State state) = 0;
+	virtual State getState(Gpio gpio) = 0;
 };
