@@ -11,6 +11,12 @@ TaskMenager::~TaskMenager()
 
 }
 
+TaskMenager &TaskMenager::getInstance()
+{
+	static TaskMenager taskMenager;
+
+	return taskMenager;
+}
 void TaskMenager::addTask(Task &task)
 {
 	if(std::find(m_tasks.begin(), m_tasks.end(), &task) == m_tasks.end())

@@ -11,7 +11,6 @@ void Func(ColorDetector::Color color)
 int main(void)
 {
 	Config::Configure();
-	TaskMenager taskMenager;
 	IrDetector irDetectorSel(IGpio::Gpio {.port  = IGpio::Port::C, .pin = 8}, 100, 1);
 	IrDetector irlDetectorCol(IGpio::Gpio {.port =  IGpio::Port::C, .pin = 9}, 100, 1);
 	ColorDetector colorDetector(ColorDetector::Config{.s0 = IGpio::Gpio {.port =  IGpio::Port::C, .pin = 6},
@@ -21,13 +20,13 @@ int main(void)
 													.led = IGpio::Gpio {.port =  IGpio::Port::C, .pin = 12},
 													.timInput = ITimer::Timer::Tim3}, 10, 1);
 
-	taskMenager.addTask(irDetectorSel);
-	taskMenager.addTask(irlDetectorCol);
-	taskMenager.addTask(colorDetector);
+	TaskMenager::getInstance().addTask(irDetectorSel);
+	TaskMenager::getInstance().addTask(irlDetectorCol);
+	TaskMenager::getInstance().addTask(colorDetector);
 	colorDetector.setColorReady(Func);
 	while(true)
 	{
-		taskMenager.run();
+		TaskMenager::getInstance().run();
 		colorDetector.measurementColor();
 	}
 }

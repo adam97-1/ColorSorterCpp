@@ -69,20 +69,20 @@ void ColorDetector::setColorPrescaler(ColorDetector::Prescaler prescaler)
 	switch(prescaler)
 	{
 	case ColorDetector::Prescaler::_0:
-		Gpio::getInstance().setState(m_config.s2, IGpio::State::Low);
-		Gpio::getInstance().setState(m_config.s3, IGpio::State::Low);
+		Gpio::getInstance().setState(m_config.s0, IGpio::State::Low);
+		Gpio::getInstance().setState(m_config.s1, IGpio::State::Low);
 		break;
 	case ColorDetector::Prescaler::_2:
-		Gpio::getInstance().setState(m_config.s2, IGpio::State::Low);
-		Gpio::getInstance().setState(m_config.s3, IGpio::State::High);
+		Gpio::getInstance().setState(m_config.s0, IGpio::State::Low);
+		Gpio::getInstance().setState(m_config.s1, IGpio::State::High);
 		break;
 	case ColorDetector::Prescaler::_80:
-		Gpio::getInstance().setState(m_config.s2, IGpio::State::High);
-		Gpio::getInstance().setState(m_config.s3, IGpio::State::Low);
+		Gpio::getInstance().setState(m_config.s0, IGpio::State::High);
+		Gpio::getInstance().setState(m_config.s1, IGpio::State::Low);
 		break;
 	case ColorDetector::Prescaler::_100:
-		Gpio::getInstance().setState(m_config.s2, IGpio::State::High);
-		Gpio::getInstance().setState(m_config.s3, IGpio::State::High);
+		Gpio::getInstance().setState(m_config.s0, IGpio::State::High);
+		Gpio::getInstance().setState(m_config.s1, IGpio::State::High);
 		break;
 	}
 }

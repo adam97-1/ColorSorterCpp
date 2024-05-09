@@ -5,9 +5,12 @@
 
 class TaskMenager
 {
-public:
+
+private:
 	TaskMenager();
 	virtual ~TaskMenager();
+public:
+	static TaskMenager &getInstance();
 	void addTask(Task &task);
 	void removeTask(Task &task);
 	void run();

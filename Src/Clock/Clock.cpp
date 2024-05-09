@@ -2,14 +2,13 @@
 
 Clock::Clock()
 {
-	// TODO Auto-generated constructor stub
 
 }
 
 
 Clock::~Clock()
 {
-	// TODO Auto-generated destructor stub
+
 }
 
 Clock &Clock::getInstance()

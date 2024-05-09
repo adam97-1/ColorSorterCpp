@@ -159,7 +159,7 @@ void Config::Configure()
 		IGpio::Config { .mode = IGpio::Config::Mode::AlternateFunction,
 						.typ  = IGpio::Config::Typ::PushPull,
 						.speed = IGpio::Config::Speed::Low,
-						.polarization = IGpio::Config::Polarization::PullUp,
+						.polarization = IGpio::Config::Polarization::NoPullUpNoPullDown,
 						.alternateFunction = 2});
 
 	Timer::getInstance().setSourceMode(ITimer::Timer::Tim3,
