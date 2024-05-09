@@ -48,11 +48,11 @@ void ColorDetector::loop()
 			setColorFilter(Filter::Green);
 			break;
 		case 2:
-			m_color.blue = frequency;
+			m_color.green = frequency;
 			setColorFilter(Filter::Blue);
 			break;
 		case 3:
-			m_color.green = frequency;
+			m_color.blue = frequency;
 			setColorFilter(Filter::None);
 			setStateLed(false);
 			m_isColorMeasurment = false;

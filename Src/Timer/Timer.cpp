@@ -87,3 +87,21 @@ bool Timer::setCompareValue(ITimer::Timer timer, ITimer::Chanel chanel, uint32_t
 		return false;
 	return m_timer->setCompareValue(timer, chanel, value);
 }
+bool Timer::setEnableOutput(ITimer::Timer timer, ITimer::Chanel chanel, bool OnOff)
+{
+	if(!m_timer)
+		return false;
+	return m_timer->setEnableOutput(timer, chanel, OnOff);
+}
+bool Timer::setEnableCompare(ITimer::Timer timer, ITimer::Chanel chanel, bool OnOff)
+{
+	if(!m_timer)
+		return false;
+	return m_timer->setEnableCompare(timer, chanel, OnOff);
+}
+bool Timer::setCompareMode(ITimer::Timer timer, ITimer::Chanel chanel, ITimer::CompareMode mode)
+{
+	if(!m_timer)
+		return false;
+	return m_timer->setCompareMode(timer, chanel, mode);
+}

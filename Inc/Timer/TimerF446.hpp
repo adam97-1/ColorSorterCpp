@@ -20,6 +20,9 @@ public:
 	bool setReloadValue(ITimer::Timer timer, uint32_t value) override;
 	uint32_t getReloadValue(ITimer::Timer timer) override;
 	bool setCompareValue(ITimer::Timer timer, ITimer::Chanel chanel, uint32_t value) override;
+	bool setEnableOutput(ITimer::Timer timer, ITimer::Chanel chanel, bool OnOff) override;
+	bool setEnableCompare(Timer timer, Chanel chanel, bool OnOff) override;
+	bool setCompareMode(ITimer::Timer timer, ITimer::Chanel chanel, ITimer::CompareMode mode) override;
 
 private:
 	void * getTimer(ITimer::Timer  timer);

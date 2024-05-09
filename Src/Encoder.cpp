@@ -1,6 +1,7 @@
 #include "Encoder.hpp"
 #include "Timer/Timer.hpp"
 #include "Function.hpp"
+#include <cmath>
 
 Encoder::Encoder(ITimer::Timer timer, uint32_t period, uint32_t priority) : m_timer{timer}
 {
@@ -16,15 +17,13 @@ Encoder::~Encoder()
 
 void Encoder::loop()
 {
-	static float oldPosition = 0;
+		m_position = Timer::getInstance().getCounterValue(m_timer)* 2 * M_PI / m_maxValue;
 
-		m_position = Timer::getInstance().getCounterValue(m_timer);
-
-		float diffPosition = Function::minRadiusDiastance(oldPosition, m_position);
+		float diffPosition = Function::minRadiusDiastance(m_oldPosition, m_position);
 
 		m_speed = diffPosition / (getPeriod() * 0.001f);
 
-		oldPosition = m_position;
+		m_oldPosition = m_position;
 }
 float Encoder::getSpeed()
 {

@@ -22,6 +22,9 @@ public:
 	bool setReloadValue(ITimer::Timer timer, uint32_t value);
 	uint32_t getReloadValue(ITimer::Timer timer);
 	bool setCompareValue(ITimer::Timer timer, ITimer::Chanel chanel, uint32_t value);
+	bool setEnableOutput(ITimer::Timer timer, ITimer::Chanel chanel, bool OnOff);
+	bool setEnableCompare(ITimer::Timer timer, ITimer::Chanel chanel, bool OnOff);
+	bool setCompareMode(ITimer::Timer timer, ITimer::Chanel chanel, ITimer::CompareMode mode);
 
 private:
 	ITimer *m_timer {nullptr};

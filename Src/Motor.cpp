@@ -1,16 +1,24 @@
-#include "Motor.hpp"]
+#include "Motor.hpp"
 #include "Timer/Timer.hpp"
+#include "TaskMenager.hpp"
 
 Motor::Motor(Config config, uint32_t period, uint32_t priority) : m_config{config}
 {
 	setPeriod(period);
 	setPriority(priority);
-	m_endocer = new Encoder(config.endoder, period, priority);
+	m_encoder = new Encoder(config.encoder, period, priority);
+	m_encoder->setMaxValue(2500);
+	m_speedPid.setPidParam(config.speedPid);
+	m_speedPid.setDiffTime(getPeriod());
+	m_positionPid.setPidParam(config.positionPid);
+	m_positionPid.setDiffTime(getPeriod());
+	TaskMenager::getInstance().addTask(*m_encoder);
 }
 
 Motor::~Motor()
 {
-	delete m_endocer;
+	TaskMenager::getInstance().removeTask(*m_encoder);
+	delete m_encoder;
 }
 
 void Motor::setTargetSpeed(float speed)
@@ -18,18 +26,30 @@ void Motor::setTargetSpeed(float speed)
 	m_targetSpeed = speed;
 }
 
+float Motor::getSpeed()
+{
+	return m_encoder->getSpeed();
+}
+
 float Motor::getTargetSpeed()
 {
-	return m_endocer->getSpeed();
+	return m_targetSpeed;
 }
+
 
 void Motor::setTargetPosition(float position)
 {
 	m_targetPosition = position;
 }
+
 float Motor::getTargetPosition()
 {
-	return m_endocer->getPosition();
+	return m_targetPosition;
+}
+
+float Motor::getPosition()
+{
+	return m_encoder->getPosition();
 }
 
 void Motor::setControlMode(ControlMode controlMode)
@@ -48,13 +68,14 @@ void Motor::loop()
 
 	switch(m_controlMode)
 	{
-//	case ControlMode::Position:
-//		speedOut = MotorSelPositionRegulator_Calculate(m_position, m_endocer->getPosition());
-//		out = MotorSelSpeedRegulator_Calculate(speedOut, m_endocer->getSpeed());
-//		break;
-//	case ControlMode::Speed:
-//		out = MotorSelSpeedRegulator_Calculate(m_targetSpeed, m_endocer->getSpeed());
-//		break;
+	case ControlMode::Position:
+		speedOut = m_positionPid.calculate(m_targetPosition, m_encoder->getPosition());
+		out = m_speedPid.calculate(speedOut, m_encoder->getSpeed());
+		break;
+	case ControlMode::Speed:
+		m_positionPid.resetIntegral();
+		out = m_speedPid.calculate(m_targetSpeed, m_encoder->getSpeed());
+		break;
 	}
 
 	if (out > 0)

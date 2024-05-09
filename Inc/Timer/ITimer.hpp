@@ -93,6 +93,18 @@ public:
 		Mode mode;
 	};
 
+	enum class CompareMode : uint32_t
+	{
+		Frozen			= 0,
+		SetActiveLevel	= 1,
+		SetInactiveLeve = 2,
+		Togle			= 3,
+		ForceInactive	= 4,
+		ForceActive		= 5,
+		Pwm1			= 6,
+		Pwm2			= 7
+	};
+
 	virtual bool setEnable(Timer timer, bool OnOff) = 0;
 	virtual bool setSourceMode(Timer timer, SourceModeInternal sourceMode) = 0;
 	virtual bool setSourceMode(Timer timer, SourceModeExternal1 sourceMode) = 0;
@@ -104,5 +116,8 @@ public:
 	virtual bool setReloadValue(Timer timer, uint32_t value) = 0;
 	virtual uint32_t getReloadValue(Timer timer) = 0;
 	virtual bool setCompareValue(Timer timer, Chanel chanel, uint32_t value) = 0;
+	virtual bool setEnableOutput(Timer timer, Chanel chanel, bool OnOff) = 0;
+	virtual bool setEnableCompare(Timer timer, Chanel chanel, bool OnOff) = 0;
+	virtual bool setCompareMode(Timer timer, Chanel chanel, CompareMode mode) = 0;
 
 };

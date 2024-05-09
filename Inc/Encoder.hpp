@@ -20,4 +20,5 @@ private:
 	float m_speed	{0};
 	float m_position {0};
 	uint32_t m_maxValue {0};
+	float m_oldPosition {0};
 };

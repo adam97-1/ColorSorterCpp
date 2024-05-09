@@ -174,9 +174,14 @@ bool TimerF446::setMode(ITimer::Timer timer, ITimer::ModeEncoder mode)
 
 	if(!tim)
 		return false;
+	if(mode.inputFilter > 15)
+		return false;
 
 	tim->CCMR1 &= ~(TIM_CCMR1_CC1S_Msk | TIM_CCMR1_CC2S_Msk);
 	tim->CCMR1 |= (1 << TIM_CCMR1_CC1S_Pos | 1 << TIM_CCMR1_CC2S_Pos);
+
+	tim->CCMR1 &= ~(TIM_CCMR1_IC1F_Msk | TIM_CCMR1_IC2F_Msk);
+	tim->CCMR1 |= (mode.inputFilter << TIM_CCMR1_IC1F_Pos | mode.inputFilter << TIM_CCMR1_IC2F_Pos);
 
 	switch(mode.edgeDetectT1)
 	{
@@ -203,9 +208,10 @@ bool TimerF446::setMode(ITimer::Timer timer, ITimer::ModeEncoder mode)
 		break;
 	case ITimer::ModeEncoder::EdgeDetect::NoInvertedBoth:
 		tim->CCER |= (TIM_CCER_CC2NP);
-		tim->CCER |= (TIM_CCER_CC1P);
+		tim->CCER |= (TIM_CCER_CC2P);
 		break;
 	}
+
 
 	tim->SMCR &= ~TIM_SMCR_SMS_Msk;
 	tim->SMCR |= (static_cast<uint32_t>(mode.mode) <<TIM_SMCR_SMS_Pos);
@@ -246,13 +252,13 @@ bool TimerF446::setCompareValue(ITimer::Timer timer, ITimer::Chanel chanel, uint
 		tim->CCR1 = value;
 		return true;
 	case ITimer::Chanel::Ch2:
-		tim->CCR1 = value;
+		tim->CCR2 = value;
 		return true;
 	case ITimer::Chanel::Ch3:
-		tim->CCR1 = value;
+		tim->CCR3 = value;
 		return true;
 	case ITimer::Chanel::Ch4:
-		tim->CCR1 = value;
+		tim->CCR4 = value;
 		return true;
 	default:
 		return false;
@@ -279,4 +285,80 @@ uint32_t TimerF446::getReloadValue(ITimer::Timer timer)
 		return 0;
 
 	return tim->ARR;
+}
+bool TimerF446::setEnableOutput(ITimer::Timer timer, ITimer::Chanel chanel, bool OnOff)
+{
+	TIM_TypeDef *tim = static_cast<TIM_TypeDef*>(getTimer(timer));
+
+	if(!tim)
+		return 0;
+	switch(chanel)
+	{
+	case ITimer::Chanel::Ch1:
+		(OnOff) ? (tim->CCER |= TIM_CCER_CC1E) : (tim->CCMR1 &=  ~TIM_CCER_CC1E);
+		return true;
+	case ITimer::Chanel::Ch2:
+		(OnOff) ? (tim->CCER |= TIM_CCER_CC2E) : (tim->CCMR1 &=  ~TIM_CCER_CC2E);
+		return true;
+	case ITimer::Chanel::Ch3:
+		(OnOff) ? (tim->CCER |= TIM_CCER_CC3E) : (tim->CCMR1 &=  ~TIM_CCER_CC3E);
+		return true;
+	case ITimer::Chanel::Ch4:
+		(OnOff) ? (tim->CCER |= TIM_CCER_CC4E) : (tim->CCMR2 &=  ~TIM_CCER_CC4E);
+		return true;
+	default:
+		return false;
+	}
+}
+bool TimerF446::setEnableCompare(ITimer::Timer timer, ITimer::Chanel chanel, bool OnOff)
+{
+	TIM_TypeDef *tim = static_cast<TIM_TypeDef*>(getTimer(timer));
+
+	if(!tim)
+		return 0;
+	switch(chanel)
+	{
+	case ITimer::Chanel::Ch1:
+		(OnOff) ? (tim->CCMR1 |= TIM_CCMR1_OC1PE) : (tim->CCMR1 &=  ~TIM_CCMR1_OC1PE);
+		return true;
+	case ITimer::Chanel::Ch2:
+		(OnOff) ? (tim->CCMR1 |= TIM_CCMR1_OC2PE) : (tim->CCMR1 &=  ~TIM_CCMR1_OC2PE);
+		return true;
+	case ITimer::Chanel::Ch3:
+		(OnOff) ? (tim->CCMR2 |= TIM_CCMR2_OC3PE) : (tim->CCMR1 &=  ~TIM_CCMR2_OC3PE);
+		return true;
+	case ITimer::Chanel::Ch4:
+		(OnOff) ? (tim->CCMR2 |= TIM_CCMR2_OC4PE) : (tim->CCMR2 &=  ~TIM_CCMR2_OC4PE);
+		return true;
+	default:
+		return false;
+	}
+}
+bool TimerF446::setCompareMode(Timer timer, Chanel chanel, ITimer::CompareMode mode)
+{
+	TIM_TypeDef *tim = static_cast<TIM_TypeDef*>(getTimer(timer));
+
+	if(!tim)
+		return 0;
+	switch(chanel)
+	{
+	case ITimer::Chanel::Ch1:
+		tim->CCMR1 &= ~TIM_CCMR1_OC1M_Msk;
+		tim->CCMR1 |= static_cast<uint32_t>(mode) << TIM_CCMR1_OC1M_Pos;
+		return true;
+	case ITimer::Chanel::Ch2:
+		tim->CCMR1 &= ~TIM_CCMR1_OC2M_Msk;
+		tim->CCMR1 |= static_cast<uint32_t>(mode) << TIM_CCMR1_OC2M_Pos;
+		return true;
+	case ITimer::Chanel::Ch3:
+		tim->CCMR2 &= ~TIM_CCMR2_OC3M_Msk;
+		tim->CCMR2 |= static_cast<uint32_t>(mode) << TIM_CCMR2_OC3M_Pos;
+		return true;
+	case ITimer::Chanel::Ch4:
+		tim->CCMR2 &= ~TIM_CCMR2_OC4M_Msk;
+		tim->CCMR2 |= static_cast<uint32_t>(mode) << TIM_CCMR2_OC4M_Pos;
+		return true;
+	default:
+		return false;
+	}
 }
