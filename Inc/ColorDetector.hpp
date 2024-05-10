@@ -21,21 +21,25 @@ public:
 
 	struct Color
 	{
-		uint32_t none;
-		uint32_t red;
-		uint32_t green;
-		uint32_t blue;
+		uint32_t none	{0};
+		uint32_t red	{0};
+		uint32_t green	{0};
+		uint32_t blue	{0};
 	};
 
-	ColorDetector(Config config, uint32_t period, uint32_t priority);
+	ColorDetector();
+	ColorDetector(const Config &config, uint32_t period = 1, uint32_t priority = 1);
 	virtual ~ColorDetector();
 
-    void setColorReady(std::function<void(Color)> func);
-
-    template<class C, void (C::*Function)(Color)>
-    void setColorReady(C *instance);
+	template<typename C>
+	void setColorReady(C &&funcMetod)
+	{
+		m_colorReady = funcMetod;
+	}
 
 	void loop() override;
+	const Config &getConfig() const;
+	void setConfig(const Config &config);
 	void measurementColor();
 
 private:
@@ -60,7 +64,7 @@ private:
 	void setStateLed(bool OnOff);
 
 	Config m_config;
-	std::function<void(Color)> m_colorReady;
+	std::function<void(const Color&)> m_colorReady;
 	bool m_isColorMeasurment {false};
 	Color m_color;
 

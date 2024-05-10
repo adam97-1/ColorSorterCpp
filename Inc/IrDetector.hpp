@@ -7,21 +7,29 @@
 class IrDetector : public Task
 {
 public:
-	IrDetector(IGpio::Gpio inSignal, uint32_t period, uint32_t priority);
+	IrDetector();
+	IrDetector(const IGpio::Gpio &inSignal, uint32_t period = 1, uint32_t priority = 1);
 	virtual ~IrDetector();
 
 	void loop() override;
 
-	IGpio::State getState();
-	void setRisingEdgeState(std::function<void()> func);
+	IGpio::State getState() const;
 
-    template<class C, void (C::*Function)(void)>
-    void setRisingEdgeState(C *instance);
+	template<typename C>
+	void setRisingEdgeState(C &&funcMetod)
+	{
+		m_risingEdgeState = funcMetod;
+	}
 
-    void setFallingEdgeState(std::function<void()> func);
+	template<typename C>
+	void setFallingEdgeState(C &&funcMetod)
+	{
+		m_fallingEdgeState = funcMetod;
+	}
 
-    template<class C, void (C::*Function)(void)>
-    void setFallingEdgeState(C *instance);
+
+    void setInSignal(const IGpio::Gpio &inSignal);
+    const IGpio::Gpio & getInGignal() const;
 private:
 	IGpio::Gpio m_inSignal;
 	IGpio::State  m_oldState {IGpio::State::Unknow};

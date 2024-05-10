@@ -8,7 +8,7 @@ class SysTickClass
 public:
 	SysTickClass();
 	virtual ~SysTickClass();
-	uint32_t getTime();
+	uint32_t getTime() const;
 private:
 	static volatile uint32_t m_time;
 };

@@ -11,15 +11,15 @@ public:
 	{
 		struct Out
 		{
-			ITimer::Timer timer;
-			ITimer::Chanel chanel;
+			ITimer::Timer timer {ITimer::Timer::Tim1};
+			ITimer::Chanel chanel {ITimer::Chanel::Ch1};
 		};
 
 		Out out1;
 		Out out2;
-		ITimer::Timer encoder;
-		PidRegulator::Pid speedPid;
-		PidRegulator::Pid positionPid;
+		ITimer::Timer encoder {ITimer::Timer::Tim1};
+		PidRegulator::PidParam speedPid;
+		PidRegulator::PidParam positionPid;
 	};
 
 	enum class ControlMode
@@ -27,24 +27,27 @@ public:
 		Position,
 		Speed
 	};
-
-	Motor(Config config, uint32_t period, uint32_t priority);
+	Motor();
+	Motor(const Config &config, uint32_t period = 1, uint32_t priority =1);
 	virtual ~Motor();
 
 	void loop() override;
 	void setTargetSpeed(float speed);
-	float getTargetSpeed();
-	float getSpeed();
+	float getTargetSpeed() const;
+	float getSpeed() const;
 	void setTargetPosition(float speed);
-	float getTargetPosition();
-	float getPosition();
+	float getTargetPosition() const;
+	float getPosition() const ;
 	void setControlMode(ControlMode controlMode);
-	ControlMode getControlMode();
+	ControlMode getControlMode() const;
+	void setConfig(const Config &config);
+	const Config &getConfig() const;
+
 
 
 private:
 	Config m_config;
-	Encoder *m_encoder {nullptr};
+	Encoder m_encoder;
 	float m_targetSpeed {0};
 	float m_targetPosition {0};
 	ControlMode m_controlMode {ControlMode::Position};

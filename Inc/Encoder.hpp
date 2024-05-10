@@ -5,14 +5,17 @@
 class Encoder : public Task
 {
 public:
-	Encoder(ITimer::Timer timer, uint32_t period, uint32_t priority);
+	Encoder(ITimer::Timer timer = ITimer::Timer::Tim1, uint32_t period = 1, uint32_t priority = 1);
 	virtual ~Encoder();
 
 	void loop() override;
-	float getSpeed();
-	float getPosition();
+	float getSpeed() const;
+	float getPosition() const;
 	void setMaxValue(uint32_t value);
-	uint32_t getMaxValue();
+	uint32_t getMaxValue() const;
+	void setTimer(ITimer::Timer timer);
+	ITimer::Timer getTimer() const;
+
 
 
 private:

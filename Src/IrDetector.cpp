@@ -1,40 +1,21 @@
 #include "IrDetector.hpp"
 #include "Gpio/Gpio.hpp"
 
-
-IrDetector::IrDetector(IGpio::Gpio inSignal, uint32_t period, uint32_t priority) : m_inSignal{inSignal}
+IrDetector::IrDetector()
 {
-	setPeriod(period);
-	setPriority(priority);
 	m_risingEdgeState = [](){};
 	m_fallingEdgeState = [](){};
+}
+IrDetector::IrDetector(const IGpio::Gpio &inSignal, uint32_t period, uint32_t priority) : m_inSignal{inSignal}
+{
+	IrDetector();
+	setPeriod(period);
+	setPriority(priority);
 }
 
 IrDetector::~IrDetector() {
 }
 
-
-void IrDetector::setRisingEdgeState(std::function<void()> func)
-{
-    m_risingEdgeState = func;
-}
-
-template<class C, void (C::*Function)(void)>
-void IrDetector::setFallingEdgeState(C *instance)
-{
-	m_risingEdgeState = std::bind(Function, instance);
-}
-
-void IrDetector::setFallingEdgeState(std::function<void()> func)
-{
-	m_fallingEdgeState = func;
-}
-
-template<class C, void (C::*Function)(void)>
-void IrDetector::setRisingEdgeState(C *instance)
-{
-	m_fallingEdgeState = std::bind(Function, instance);
-}
 void IrDetector::loop()
 {
 	IGpio::State state = Gpio::getInstance().getState(m_inSignal);
@@ -51,8 +32,17 @@ void IrDetector::loop()
 	}
 	m_oldState = state;
 }
-IGpio::State IrDetector::getState()
+IGpio::State IrDetector::getState() const
 {
 	return Gpio::getInstance().getState(m_inSignal);
+}
+
+void IrDetector::setInSignal(const IGpio::Gpio &inSignal)
+{
+	m_inSignal = inSignal;
+}
+const IGpio::Gpio & IrDetector::getInGignal() const
+{
+	return m_inSignal;
 }
 

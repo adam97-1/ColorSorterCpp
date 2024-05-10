@@ -25,11 +25,11 @@ void Encoder::loop()
 
 		m_oldPosition = m_position;
 }
-float Encoder::getSpeed()
+float Encoder::getSpeed() const
 {
 	return m_speed;
 }
-float Encoder::getPosition()
+float Encoder::getPosition() const
 {
 	return m_position;
 }
@@ -37,8 +37,16 @@ void Encoder::setMaxValue(uint32_t value)
 {
 	m_maxValue = value;
 }
-uint32_t Encoder::getMaxValue()
+uint32_t Encoder::getMaxValue() const
 {
 	return m_maxValue;
+}
+void Encoder::setTimer(ITimer::Timer timer)
+{
+	m_timer = timer;
+}
+ITimer::Timer Encoder::getTimer() const
+{
+	return m_timer;
 }
 

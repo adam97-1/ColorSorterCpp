@@ -5,7 +5,7 @@ class PidRegulator
 {
 public:
 
-	struct Pid
+	struct PidParam
 	{
 		float kp {1};
 		float ki {0};
@@ -16,6 +16,7 @@ public:
 		float maxOutValue {100000000};
 	};
 
+	PidRegulator(const PidParam &pidParam, uint32_t diffMsTime = 1);
 	PidRegulator(float kp = 1, float ki = 0, float kd = 0, bool zeroDetect = false,
 			float maxIntegral = 100000000, float maxInValue = 100000000, float maxOutValue = 100000000,
 			uint32_t diffMsTime = 1);
@@ -23,36 +24,31 @@ public:
 
 	float calculate(float targetValue, float actualValue);
 
-	void setPidParam(Pid pid);
+	void setPidParam(const PidParam &pidParam);
+	const PidParam & getPidParam() const;
 	void setKp(float kp);
-	float getKp();
+	float getKp() const;
 	void setKi(float ki);
-	float getKi();
+	float getKi() const;
 	void setKd(float kd);
-	float getKd();
+	float getKd() const;
 	void setMaxInValue(float maxValue);
-	float getMaxInValue();
+	float getMaxInValue() const;
 	void setMaxIntegral(float maxValue);
-	float getMaxIntegral();
+	float getMaxIntegral() const;
 	void setMaxOutValue(float maxValue);
-	float getMaxOutValue();
+	float getMaxOutValue() const;
 	void setDiffTime(uint32_t msTimme);
-	uint32_t getDiffTime();
+	uint32_t getDiffTime() const;
 	void setZeroDetect(bool OnOff);
-	bool getZeroDetect();
+	bool getZeroDetect() const;
 	void resetIntegral();
 
 private:
-	float saturation(float value, float maxValue);
+	float saturation(float value, float maxValue) const;
 
-	float m_Kp;
-	float m_Ki;
-	float m_Kd;
-	float m_maxIntegral;
-	float m_maxInValue;
-	float m_maxOutValue;
+	PidParam m_pidPara;
 	uint32_t m_diffMsTime;
 	float m_errorIntegral {0};
 	float m_oldValueError {0};
-	bool m_zeroDetect;
 };

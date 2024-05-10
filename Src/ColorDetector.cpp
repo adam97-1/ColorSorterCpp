@@ -2,7 +2,12 @@
 #include "Timer/Timer.hpp"
 #include "Gpio/Gpio.hpp"
 
-ColorDetector::ColorDetector(Config config, uint32_t period, uint32_t priority) : m_config{config}
+ColorDetector::ColorDetector()
+{
+	setPeriod(1);
+	setPriority(1);
+}
+ColorDetector::ColorDetector(const Config &config, uint32_t period, uint32_t priority) : m_config{config}
 {
 	setPeriod(period);
 	setPriority(priority);
@@ -14,18 +19,6 @@ ColorDetector::ColorDetector(Config config, uint32_t period, uint32_t priority) 
 ColorDetector::~ColorDetector()
 {
 
-}
-
-
-void ColorDetector::setColorReady(std::function<void(Color)> func)
-{
-    m_colorReady = func;
-}
-
-template<class C, void (C::*Function)(ColorDetector::Color)>
-void ColorDetector::setColorReady(C *instance)
-{
-	m_colorReady = std::bind(Function, instance, std::placeholders::_1);
 }
 
 void ColorDetector::loop()
@@ -117,5 +110,14 @@ void ColorDetector::measurementColor()
 {
 	setStateLed(true);
 	m_isColorMeasurment = true;
+}
+
+const ColorDetector::Config & ColorDetector::getConfig() const
+{
+	return m_config;
+}
+void ColorDetector::setConfig(const ColorDetector::Config &config)
+{
+	m_config = config;
 }
 

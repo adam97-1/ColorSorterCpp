@@ -20,8 +20,8 @@ public:
 
 	struct Gpio
 	{
-		Port port;
-		uint32_t pin;
+		Port port {Port::A};
+		uint32_t pin {1};
 	};
 
 	struct Config
@@ -57,7 +57,7 @@ public:
 		Typ typ {Typ::PushPull};
 		Speed speed {Speed::Low};
 		Polarization polarization {Polarization::NoPullUpNoPullDown};
-		uint32_t alternateFunction;
+		uint32_t alternateFunction {0};
 	};
 
 	enum class State : uint32_t
