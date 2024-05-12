@@ -14,14 +14,15 @@ Encoder::~Encoder()
 
 }
 
-
 void Encoder::loop()
 {
 		m_position = Timer::getInstance().getCounterValue(m_timer)* 2 * M_PI / m_maxValue;
 
+
 		float diffPosition = Function::minRadiusDiastance(m_oldPosition, m_position);
 
-		m_speed = diffPosition / (getPeriod() * 0.001f);
+//		m_speed = diffPosition / (getPeriod() * 0.001f);
+		m_speed = (m_speed*100 + diffPosition / (getPeriod() * 0.001f))/101;
 
 		m_oldPosition = m_position;
 }

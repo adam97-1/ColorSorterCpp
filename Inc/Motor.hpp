@@ -28,20 +28,23 @@ public:
 		Speed
 	};
 	Motor();
-	Motor(const Config &config, uint32_t period = 1, uint32_t priority =1);
+	Motor(const Config &config, uint32_t period = 1, uint32_t priority = 1);
 	virtual ~Motor();
 
 	void loop() override;
 	void setTargetSpeed(float speed);
 	float getTargetSpeed() const;
 	float getSpeed() const;
-	void setTargetPosition(float speed);
+	void setTargetPosition(float position);
 	float getTargetPosition() const;
 	float getPosition() const ;
 	void setControlMode(ControlMode controlMode);
 	ControlMode getControlMode() const;
 	void setConfig(const Config &config);
 	const Config &getConfig() const;
+	void setPeriod(uint32_t period);
+	void setPriority(uint32_t priority);
+
 
 
 

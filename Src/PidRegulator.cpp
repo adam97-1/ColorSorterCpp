@@ -100,7 +100,7 @@ float PidRegulator::getMaxOutValue() const
 }
 void PidRegulator::setDiffTime(uint32_t msTimme)
 {
-	m_diffMsTime  =msTimme;
+	m_diffMsTime  = msTimme;
 }
 uint32_t PidRegulator::getDiffTime() const
 {

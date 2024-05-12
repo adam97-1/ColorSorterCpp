@@ -4,6 +4,9 @@
 
 Motor::Motor()
  {
+	setPeriod(1);
+	setPriority(1);
+	TaskMenager::getInstance().addTask(m_encoder);
 
  }
 Motor::Motor(const Config &config, uint32_t period, uint32_t priority) : m_config{config}
@@ -12,15 +15,13 @@ Motor::Motor(const Config &config, uint32_t period, uint32_t priority) : m_confi
 	setPriority(priority);
 
 	m_encoder.setTimer(m_config.encoder);
-	m_encoder.setPeriod(period);
-	m_encoder.setPriority(priority);
-	m_encoder.setMaxValue(2500);
+	m_encoder.setMaxValue(2472);
 
 	m_speedPid.setPidParam(config.speedPid);
-	m_speedPid.setDiffTime(getPeriod());
+	m_speedPid.setDiffTime(period);
 
 	m_positionPid.setPidParam(config.positionPid);
-	m_positionPid.setDiffTime(getPeriod());
+	m_positionPid.setDiffTime(period);
 
 	TaskMenager::getInstance().addTask(m_encoder);
 }
@@ -101,9 +102,28 @@ void Motor::loop()
 void Motor::setConfig(const Motor::Config &config)
 {
 	m_config = config;
-	m_encoder.setMaxValue(2500);
+	m_encoder.setTimer(m_config.encoder);
+	m_encoder.setPeriod(getPeriod());
+	m_encoder.setPriority(getPriority());
+	m_encoder.setMaxValue(2472);
+
+	m_speedPid.setPidParam(config.speedPid);
+	m_speedPid.setDiffTime(getPeriod());
+
+	m_positionPid.setPidParam(config.positionPid);
+	m_positionPid.setDiffTime(getPeriod());
 }
 const Motor::Config &Motor::getConfig() const
 {
 	return m_config;
+}
+void Motor::setPeriod(uint32_t period)
+{
+	m_encoder.setPeriod(period);
+	Task::setPeriod(period);
+}
+void Motor::setPriority(uint32_t priority)
+{
+	m_encoder.setPriority(priority);
+	Task::setPriority(priority);
 }

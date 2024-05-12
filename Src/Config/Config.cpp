@@ -167,7 +167,7 @@ void Config::Configure()
 													.edgeDetectT1 = ITimer::ModeEncoder::EdgeDetect::NoInvertedRising,
 													.edgeDetectT2 = ITimer::ModeEncoder::EdgeDetect::NoInvertedRising,
 													.mode = ITimer::ModeEncoder::Mode::BothDependingTi});
-	Timer::getInstance().setReloadValue(ITimer::Timer::Tim1, 2500);
+	Timer::getInstance().setReloadValue(ITimer::Timer::Tim1, 2472);
 //////////////////////////////////////////////////////////////////////////////////
 /// EncoderMotorSel
 /////////////////////////////////////////////////////////////////////////////////
@@ -190,7 +190,7 @@ void Config::Configure()
 													.edgeDetectT1 = ITimer::ModeEncoder::EdgeDetect::NoInvertedRising,
 													.edgeDetectT2 = ITimer::ModeEncoder::EdgeDetect::NoInvertedRising,
 													.mode = ITimer::ModeEncoder::Mode::BothDependingTi});
-	Timer::getInstance().setReloadValue(ITimer::Timer::Tim2, 2500);
+	Timer::getInstance().setReloadValue(ITimer::Timer::Tim2, 2472);
 //////////////////////////////////////////////////////////////////////////////////
 /// MotorSel
 /////////////////////////////////////////////////////////////////////////////////

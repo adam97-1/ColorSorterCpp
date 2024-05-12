@@ -5,19 +5,17 @@
 
 Run::Run()
 {
-	Config::Configure();
-
 	IGpio::Gpio gpio;
 	gpio.port  = IGpio::Port::C;
 	gpio.pin = 8;
 	m_irDetectorSel.setInSignal(gpio);
-	m_irDetectorSel.setPeriod(100);
+	m_irDetectorSel.setPeriod(10);
 	m_irDetectorSel.setPriority(1);
 
 	gpio.port  = IGpio::Port::C;
 	gpio.pin = 9;
 	m_irDetectorCol.setInSignal(gpio);
-	m_irDetectorCol.setPeriod(100);
+	m_irDetectorCol.setPeriod(10);
 	m_irDetectorCol.setPriority(1);
 
 
@@ -46,8 +44,8 @@ Run::Run()
 	colorConfig.timInput = ITimer::Timer::Tim3;
 
 	m_colorDetector.setConfig(colorConfig);
-	m_irDetectorCol.setPeriod(100);
-	m_irDetectorCol.setPriority(1);
+	m_colorDetector.setPeriod(100);
+	m_colorDetector.setPriority(1);
 
 
 	Motor::Config motorConfig;
@@ -55,11 +53,11 @@ Run::Run()
 	PidRegulator::PidParam pidParam;
 
 	pidParam.kp = 300;
-	pidParam.ki = 10000;
+	pidParam.ki = 1000;
 	pidParam.kd = 0;
 	pidParam.zeroDetect = false;
 	pidParam.maxIntegral = 10000000;
-	pidParam.maxInValue = 15.5;
+	pidParam.maxInValue = 14.5;
 	pidParam.maxOutValue = 2000;
 	motorConfig.speedPid = pidParam;
 
@@ -85,26 +83,27 @@ Run::Run()
 	motorConfig.encoder = ITimer::Timer::Tim1;
 
 	m_motorDirv.setConfig(motorConfig);
-	m_motorDirv.setPeriod(100);
+	m_motorDirv.setPeriod(1);
 	m_motorDirv.setPriority(1);
+	m_motorDirv.setControlMode(Motor::ControlMode::Speed);
 
 
 	pidParam.kp = 300;
-	pidParam.ki = 10000;
+	pidParam.ki = 1000;
 	pidParam.kd = 0;
 	pidParam.zeroDetect = false;
 	pidParam.maxIntegral = 10000000;
-	pidParam.maxInValue = 15.5;
+	pidParam.maxInValue = 14.5;
 	pidParam.maxOutValue = 2000;
 	motorConfig.speedPid = pidParam;
 
 	pidParam.kp = 20;
-	pidParam.ki = 10000;
+	pidParam.ki = 20;
 	pidParam.kd = 0;
 	pidParam.zeroDetect = true;
 	pidParam.maxIntegral = 10000000;
 	pidParam.maxInValue = 2*M_PI;;
-	pidParam.maxOutValue = 15.5;
+	pidParam.maxOutValue = 14.5;
 	motorConfig.positionPid = pidParam;
 
 
@@ -119,8 +118,9 @@ Run::Run()
 	motorConfig.encoder = ITimer::Timer::Tim2;
 
 	m_motorSel.setConfig(motorConfig);
-	m_motorSel.setPeriod(100);
+	m_motorSel.setPeriod(1);
 	m_motorSel.setPriority(1);
+	m_motorSel.setControlMode(Motor::ControlMode::Position);
 
 	TaskMenager::getInstance().addTask(m_irDetectorSel);
 	TaskMenager::getInstance().addTask(m_irDetectorCol);
@@ -133,6 +133,7 @@ Run::Run()
 	m_colorDetector.setColorReady(std::bind(&Run::slotColorReady, this, std::placeholders::_1));
 
 	m_motorDirv.setTargetSpeed(0.5);
+	m_motorSel.setTargetPosition(0);
 }
 
 Run::~Run()
@@ -157,9 +158,10 @@ void Run::slotIrDetectorColRisingEdgeState()
 }
 void Run::slotIrDetectorSelRisingEdgeState()
 {
-	m_beginColorLine++;
 	setPositionOfColor();
+	m_beginColorLine++;
 }
+
 void Run::slotColorReady(const ColorDetector::Color &color)
 {
 	m_colorLine[m_backColorLine] = color;
@@ -170,13 +172,13 @@ void Run::setPositionOfColor()
 {
 	ColorDetector::Color color = m_colorLine[m_beginColorLine];
 	if(color.blue < color.green && color.blue < color.red)
-		m_motorSel.setTargetPosition(1);
+		m_motorSel.setTargetPosition(1.05);
 	else if(color.blue > color.green && color.blue > color.red)
-		m_motorSel.setTargetPosition(2);
+		m_motorSel.setTargetPosition(1.05*2);
 	else if(color.green > color.blue && color.green > color.red)
-		m_motorSel.setTargetPosition(3);
+		m_motorSel.setTargetPosition(1.05*3);
 	else if(color.red > color.blue && color.red > color.green)
-		m_motorSel.setTargetPosition(4);
+		m_motorSel.setTargetPosition(1.05*4);
 
 }
 

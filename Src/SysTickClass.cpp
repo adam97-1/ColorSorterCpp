@@ -10,7 +10,6 @@ SysTickClass::SysTickClass()
 	{
 		SysTick_Config(SystemCoreClock / 1000);
 		NVIC_EnableIRQ(SysTick_IRQn);
-		NVIC_EnableIRQ(DebugMonitor_IRQn);
 		firstRun = false;
 	}
 }
@@ -35,10 +34,5 @@ extern "C" {
 	void SysTick_Handler(void)
 	{
 		SysTick_HandlerCpp();
-	}
-
-	void DebugMon_Handler(void)
-	{
-
 	}
 }

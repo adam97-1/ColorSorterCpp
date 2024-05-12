@@ -6,6 +6,7 @@ ColorDetector::ColorDetector()
 {
 	setPeriod(1);
 	setPriority(1);
+	m_colorReady = [](Color color){};
 }
 ColorDetector::ColorDetector(const Config &config, uint32_t period, uint32_t priority) : m_config{config}
 {
@@ -119,5 +120,7 @@ const ColorDetector::Config & ColorDetector::getConfig() const
 void ColorDetector::setConfig(const ColorDetector::Config &config)
 {
 	m_config = config;
+	setColorPrescaler(ColorDetector::Prescaler::_100);
+	setColorFilter(ColorDetector::Filter::None);
 }
 
