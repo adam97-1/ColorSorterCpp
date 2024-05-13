@@ -6,13 +6,11 @@ ColorDetector::ColorDetector()
 {
 	setPeriod(1);
 	setPriority(1);
-	m_colorReady = [](Color color){};
 }
 ColorDetector::ColorDetector(const Config &config, uint32_t period, uint32_t priority) : m_config{config}
 {
 	setPeriod(period);
 	setPriority(priority);
-	m_colorReady = [](Color color){};
 	setColorPrescaler(ColorDetector::Prescaler::_100);
 	setColorFilter(ColorDetector::Filter::None);
 }
@@ -26,7 +24,7 @@ void ColorDetector::loop()
 {
 	static uint8_t subColorMeasurement = 0;
 
-		if (m_isColorMeasurment == false)
+		if (m_isColorMeasurment == false && false)
 			return;
 
 		uint32_t frequency = Timer::getInstance().getCounterValue(m_config.timInput);
@@ -50,11 +48,13 @@ void ColorDetector::loop()
 			setColorFilter(Filter::None);
 			setStateLed(false);
 			m_isColorMeasurment = false;
-			m_colorReady(m_color);
+			for(uint32_t i = 0; i < m_endObserverList; i++)
+				m_observers[i]->onColorReady(this, m_color);
 			break;
 		default:
 			break;
 		}
+
 		subColorMeasurement++;
 		subColorMeasurement %= 4;
 }
@@ -122,5 +122,11 @@ void ColorDetector::setConfig(const ColorDetector::Config &config)
 	m_config = config;
 	setColorPrescaler(ColorDetector::Prescaler::_100);
 	setColorFilter(ColorDetector::Filter::None);
+}
+
+void ColorDetector::addOnserver(ColorDetectorOnserver* observer)
+{
+	m_observers[m_endObserverList] = observer;
+	m_endObserverList++;
 }
 

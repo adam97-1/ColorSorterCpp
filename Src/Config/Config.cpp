@@ -67,8 +67,16 @@ void Config::Configure()
 //							.speed = IGpio::Config::Speed::Low,
 //							.polarization = IGpio::Config::Polarization::PullUp,
 //							.alternateFunction = 7});
-
-
+//////////////////////////////////////////////////////////////////////////////////
+// TestPin
+//////////////////////////////////////////////////////////////////////////////////
+Gpio::getInstance().setConfig(
+		IGpio::Gpio { .port = IGpio::Port::C, .pin = 3},
+		IGpio::Config { .mode = IGpio::Config::Mode::Output,
+						.typ  = IGpio::Config::Typ::PushPull,
+						.speed = IGpio::Config::Speed::High,
+						.polarization = IGpio::Config::Polarization::PullUp,
+						.alternateFunction = 0});
 //////////////////////////////////////////////////////////////////////////////////
 /// ColorDetector
 /////////////////////////////////////////////////////////////////////////////////

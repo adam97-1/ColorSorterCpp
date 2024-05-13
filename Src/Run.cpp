@@ -1,7 +1,6 @@
 #include "Run.hpp"
 #include <Config/Config.hpp>
 #include <cmath>
-#include <functional>
 
 Run::Run()
 {
@@ -128,9 +127,9 @@ Run::Run()
 	TaskMenager::getInstance().addTask(m_motorDirv);
 	TaskMenager::getInstance().addTask(m_motorSel);
 
-	m_irDetectorCol.setRisingEdgeState(std::bind(&Run::slotIrDetectorColRisingEdgeState ,this));
-	m_irDetectorSel.setRisingEdgeState(std::bind(&Run::slotIrDetectorSelRisingEdgeState ,this));
-	m_colorDetector.setColorReady(std::bind(&Run::slotColorReady, this, std::placeholders::_1));
+	m_irDetectorCol.addOnserver(this);
+	m_irDetectorSel.addOnserver(this);
+	m_colorDetector.addOnserver(this);
 
 	m_motorDirv.setTargetSpeed(0.5);
 	m_motorSel.setTargetPosition(0);
@@ -138,11 +137,7 @@ Run::Run()
 
 Run::~Run()
 {
-	TaskMenager::getInstance().removeTask(m_irDetectorSel);
-	TaskMenager::getInstance().removeTask(m_irDetectorCol);
-	TaskMenager::getInstance().removeTask(m_colorDetector);
-	TaskMenager::getInstance().removeTask(m_motorDirv);
-	TaskMenager::getInstance().removeTask(m_motorSel);
+
 }
 
 int Run::exec()
@@ -152,20 +147,30 @@ int Run::exec()
 	return 0;
 }
 
-void Run::slotIrDetectorColRisingEdgeState()
+void Run::onRisingEdgeState(IrDetector* irDetector)
 {
-	m_colorDetector.measurementColor();
+	if(&m_irDetectorCol  == irDetector)
+	{
+		m_colorDetector.measurementColor();
+	}
+	if(&m_irDetectorSel  == irDetector)
+	{
+		setPositionOfColor();
+		m_beginColorLine++;
+	}
 }
-void Run::slotIrDetectorSelRisingEdgeState()
+void Run::onFallingEdgeState(IrDetector* irDetector)
 {
-	setPositionOfColor();
-	m_beginColorLine++;
+
 }
 
-void Run::slotColorReady(const ColorDetector::Color &color)
+void Run::onColorReady(ColorDetector* colorDetector, ColorDetector::Color &color)
 {
-	m_colorLine[m_backColorLine] = color;
-	m_backColorLine++;
+	if(&m_colorDetector == colorDetector)
+	{
+		m_colorLine[m_backColorLine] = color;
+		m_backColorLine++;
+	}
 }
 
 void Run::setPositionOfColor()
