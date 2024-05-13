@@ -5,7 +5,8 @@
 #include "ColorDetector.hpp"
 #include "Motor.hpp"
 
-class Run {
+class Run : public ColorDetectorOnserver, IrDetectorOnserver
+{
 public:
 	Run();
 	virtual ~Run();
@@ -13,10 +14,10 @@ public:
 	int exec();
 
 private:
-	void slotIrDetectorColRisingEdgeState();
-	void slotIrDetectorSelRisingEdgeState();
-	void slotColorReady(const ColorDetector::Color &color);
 	void setPositionOfColor();
+	void onRisingEdgeState(IrDetector* irDetector) override;
+	void onFallingEdgeState(IrDetector* irDetector) override;
+	void onColorReady(ColorDetector* colorDetector, ColorDetector::Color &color) override;
 
 	IrDetector m_irDetectorSel;
 	IrDetector m_irDetectorCol;

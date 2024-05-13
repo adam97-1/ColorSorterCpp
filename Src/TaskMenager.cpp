@@ -1,5 +1,5 @@
 #include "TaskMenager.hpp"
-#include <algorithm>
+#include "Gpio/Gpio.hpp"
 
 TaskMenager::TaskMenager()
 {
@@ -19,16 +19,10 @@ TaskMenager &TaskMenager::getInstance()
 }
 void TaskMenager::addTask(Task &task)
 {
-	if(std::find(m_tasks.begin(), m_tasks.end(), &task) == m_tasks.end())
-		m_tasks.push_back(&task);
+	m_tasks[m_endLine] = &task;
+	m_endLine++;
 }
-void TaskMenager::removeTask(Task &task)
-{
-    auto it = std::find(m_tasks.begin(), m_tasks.end(), &task);
 
-    if(it != m_tasks.end())
-    	m_tasks.erase(it);
-}
 void TaskMenager::run()
 {
 	static uint32_t oldMsTime = 0;
@@ -39,12 +33,16 @@ void TaskMenager::run()
 		return;
 	oldMsTime = msTime;
 
-	for(auto task : m_tasks)
+	Gpio::getInstance().setState(IGpio::Gpio{.port = IGpio::Port::C, .pin = 3}, IGpio::State::High);
+
+	for(uint32_t i= 0; i < m_endLine ; i++)
 	{
-		if ((msTime % task->getPeriod()) == 0)
+		if ((msTime % m_tasks[i]->getPeriod()) == 0 || true)
 		{
-			task->loop();
+			m_tasks[i]->loop();
 		}
 	}
+
+	Gpio::getInstance().setState(IGpio::Gpio{.port = IGpio::Port::C, .pin = 3}, IGpio::State::Low);
 }
 

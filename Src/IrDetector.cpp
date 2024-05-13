@@ -3,8 +3,7 @@
 
 IrDetector::IrDetector()
 {
-	m_risingEdgeState = [](){};
-	m_fallingEdgeState = [](){};
+
 }
 IrDetector::IrDetector(const IGpio::Gpio &inSignal, uint32_t period, uint32_t priority) : m_inSignal{inSignal}
 {
@@ -22,11 +21,13 @@ void IrDetector::loop()
 	if ((state != m_oldState) && (m_oldState != IGpio::State::Unknow)) {
 		if (state == IGpio::State::High)
 		{
-			m_risingEdgeState();
+			for(uint32_t i = 0; i < m_endObserverList; i++)
+				m_observers[i]->onRisingEdgeState(this);
 		}
 		else if (state == IGpio::State::Low)
 		{
-			m_fallingEdgeState();
+			for(uint32_t i = 0; i < m_endObserverList; i++)
+				m_observers[i]->onFallingEdgeState(this);
 		}
 
 	}
@@ -44,5 +45,10 @@ void IrDetector::setInSignal(const IGpio::Gpio &inSignal)
 const IGpio::Gpio & IrDetector::getInGignal() const
 {
 	return m_inSignal;
+}
+void IrDetector::addOnserver(IrDetectorOnserver* observer)
+{
+	m_observers[m_endObserverList] = observer;
+	m_endObserverList++;
 }
 
