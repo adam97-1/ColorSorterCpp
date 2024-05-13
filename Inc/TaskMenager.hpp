@@ -12,9 +12,9 @@ private:
 public:
 	static TaskMenager &getInstance();
 	void addTask(Task &task);
-	void removeTask(Task &task);
 	void run();
 private:
-	std::list<Task*> m_tasks;
+	Task* m_tasks[512];
+	uint16_t m_endLine {0};
 	SysTickClass m_sysTick;
 };

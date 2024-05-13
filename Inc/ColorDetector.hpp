@@ -4,8 +4,8 @@
 #include "Gpio/IGpio.hpp"
 #include "Timer/ITimer.hpp"
 #include <cstdint>
-#include <functional>
 
+class ColorDetectorOnserver;
 class ColorDetector : public Task
 {
 public:
@@ -31,12 +31,7 @@ public:
 	ColorDetector(const Config &config, uint32_t period = 1, uint32_t priority = 1);
 	virtual ~ColorDetector();
 
-	template<typename C>
-	void setColorReady(C &&funcMetod)
-	{
-		m_colorReady = funcMetod;
-	}
-
+	void addOnserver(ColorDetectorOnserver* observer);
 	void loop() override;
 	const Config &getConfig() const;
 	void setConfig(const Config &config);
@@ -64,8 +59,15 @@ private:
 	void setStateLed(bool OnOff);
 
 	Config m_config;
-	std::function<void(const Color&)> m_colorReady;
 	bool m_isColorMeasurment {false};
 	Color m_color;
+	ColorDetectorOnserver* m_observers[20];
+	uint8_t m_endObserverList {0};
 
+};
+
+class ColorDetectorOnserver
+{
+public:
+	virtual void onColorReady(ColorDetector* colorDetector, ColorDetector::Color &color){};
 };

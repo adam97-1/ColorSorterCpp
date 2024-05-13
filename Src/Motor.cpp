@@ -28,7 +28,7 @@ Motor::Motor(const Config &config, uint32_t period, uint32_t priority) : m_confi
 
 Motor::~Motor()
 {
-	TaskMenager::getInstance().removeTask(m_encoder);
+
 }
 
 void Motor::setTargetSpeed(float speed)

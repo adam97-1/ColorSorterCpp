@@ -2,8 +2,8 @@
 
 #include "Task.hpp"
 #include "Gpio/IGpio.hpp"
-#include <functional>
 
+class  IrDetectorOnserver;
 class IrDetector : public Task
 {
 public:
@@ -13,26 +13,21 @@ public:
 
 	void loop() override;
 
+	void addOnserver(IrDetectorOnserver* observer);
 	IGpio::State getState() const;
-
-	template<typename C>
-	void setRisingEdgeState(C &&funcMetod)
-	{
-		m_risingEdgeState = funcMetod;
-	}
-
-	template<typename C>
-	void setFallingEdgeState(C &&funcMetod)
-	{
-		m_fallingEdgeState = funcMetod;
-	}
-
-
     void setInSignal(const IGpio::Gpio &inSignal);
     const IGpio::Gpio & getInGignal() const;
 private:
 	IGpio::Gpio m_inSignal;
 	IGpio::State  m_oldState {IGpio::State::Unknow};
-	std::function<void(void)> m_risingEdgeState;
-	std::function<void(void)> m_fallingEdgeState;
+	IrDetectorOnserver* m_observers[20];
+	uint8_t m_endObserverList {0};
+
+};
+
+class IrDetectorOnserver
+{
+public:
+	virtual void onRisingEdgeState(IrDetector* irDetector){};
+	virtual void onFallingEdgeState(IrDetector* irDetector){};
 };
