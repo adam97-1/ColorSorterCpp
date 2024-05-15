@@ -1,8 +1,7 @@
 #include "Run.hpp"
 #include <Config/Config.hpp>
 #include <cmath>
-#include <functional>
-
+#include <DebugMonitor.h>
 Run::Run()
 {
 	IGpio::Gpio gpio;
@@ -143,8 +142,17 @@ Run::~Run()
 
 int Run::exec()
 {
+	volatile uint32_t *demcr = (uint32_t*)0xE000EDFC;
+	const uint32_t mon_en_bit = 16;
+	*demcr |= 7 << mon_en_bit;
+
+	volatile uint32_t *shpr3 = (uint32_t *)0xE000ED20;
+	*shpr3 = 0x00;
 	while(true)
+	{
+		sendData.indexMain++;
 		TaskMenager::getInstance().run();
+	}
 	return 0;
 }
 

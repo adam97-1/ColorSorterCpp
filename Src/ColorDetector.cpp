@@ -24,8 +24,8 @@ void ColorDetector::loop()
 {
 	static uint8_t subColorMeasurement = 0;
 
-//		if (m_isColorMeasurment == false)
-//			return;
+		if (m_isColorMeasurment == false && false)
+			return;
 
 		uint32_t frequency = Timer::getInstance().getCounterValue(m_config.timInput);
 		Timer::getInstance().setCounterValue(m_config.timInput, 0);

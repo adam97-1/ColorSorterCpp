@@ -29,11 +29,9 @@ void TaskMenager::run()
 
 	uint32_t msTime = m_sysTick.getTime();
 
-	if (oldMsTime == msTime)
-		return;
+//	if (oldMsTime == msTime)
+//		return;
 	oldMsTime = msTime;
-
-	Gpio::getInstance().setState(IGpio::Gpio{.port = IGpio::Port::C, .pin = 3}, IGpio::State::High);
 
 	for(uint32_t i= 0; i < m_endLine ; i++)
 	{
@@ -42,7 +40,5 @@ void TaskMenager::run()
 			m_tasks[i]->loop();
 		}
 	}
-
-	Gpio::getInstance().setState(IGpio::Gpio{.port = IGpio::Port::C, .pin = 3}, IGpio::State::Low);
 }
 

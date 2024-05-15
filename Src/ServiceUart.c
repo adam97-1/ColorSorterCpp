@@ -1,6 +1,6 @@
-#include "Run.hpp"
-#include "Config/Config.hpp"
+#include "ServiceUart.h"
 #include <stm32f446xx.h>
+
 
 void ServiceUart_Init( )
 {
@@ -29,15 +29,3 @@ void ServiceUart_Init( )
 	USART2->CR1 |= (USART_CR1_TE);
 
 }
-
-int main(void)
-{
-	ServiceUart_Init();
-	Config::Configure();
-
-
-	Run app;
-	return app.exec();
-}
-
-
